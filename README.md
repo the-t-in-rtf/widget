@@ -19,9 +19,7 @@ The ul.html file shows an example of integration.
 
 3 ) The required files for the integration of the widget are:
 
-<head>
-        <link href="css/widgetfeedback_ul.css" rel="stylesheet"> 
+       <link href="css/widgetfeedback_ul.css" rel="stylesheet"> 
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> 
         <script src="js/widgetfeedback_ul.js"></script>
-.....
-</head>
+
