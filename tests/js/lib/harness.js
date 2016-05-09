@@ -9,12 +9,12 @@ var fluid = require("infusion");
 
 require("ul-api");
 
-fluid.require("%ul-api/tests/js/lib/test-harness.js");
+fluid.require("%gpii-ul-api/tests/js/lib/test-harness.js");
 
 // The API test harness with our local templates and code
 fluid.defaults("gpii.test.userReviewWidget.harness", {
     gradeNames: ["gpii.ul.api.tests.harness"],
-    templateDirs: ["%gpii-user-review-widget/src/templates", "%ul-api/src/templates", "%gpii-express-user/src/templates", "%gpii-json-schema/src/templates"],
+    templateDirs: ["%gpii-user-review-widget/src/templates", "%gpii-ul-api/src/templates", "%gpii-express-user/src/templates", "%gpii-json-schema/src/templates"],
     ports: {
         api:   7654,
         pouch: 7631
@@ -25,7 +25,7 @@ fluid.defaults("gpii.test.userReviewWidget.harness", {
                 components: {
                     src: {
                         options: {
-                            content: ["%gpii-user-review-widget", "%ul-api/src"]
+                            content: ["%gpii-user-review-widget/src", "%gpii-ul-api/src"]
                         }
                     }
                 }
