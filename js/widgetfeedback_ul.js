@@ -1,8 +1,8 @@
             var completeForm = false;
             var app = "ul";
             var user = "4";
-            var urlserverGlobal = "http://193.27.9.220/widget/";
-            //var urlserverGlobal = "http://localhost:7070/widget/";
+            //var urlserverGlobal = "http://193.27.9.220/widget/";
+            var urlserverGlobal = "http://localhost:8084/widget/";
             //var urlserverGlobal = "http://saapho:8080/widget/"
             var imageuser = "http://lorempixum.com/100/100/nature/1";
             var altimguser = "example of image user";
