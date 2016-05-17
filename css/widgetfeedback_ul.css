@@ -233,7 +233,7 @@
             }
             
             .widget_content{
-                height: 350px;
+                /*height: 350px;*/
                 width: 100%;
             }
             
@@ -497,7 +497,7 @@
                       border-bottom: solid #000000;
                       border-width:2px;
                       overflow: auto;
-                      height:285px;
+                      /*height:285px;*/
                       display: none;
                   }
                   

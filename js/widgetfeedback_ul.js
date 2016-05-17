@@ -1,11 +1,102 @@
-            var completeForm = false;
+	var WidgetConf = {
+		url:  'http://localhost:8084/widget/',
+		app:  'ul',
+		user: '4',
+		id:   $(location).attr('pathname')
+	};
+	
+	var WidgetAPI = {
+		doRequest: function(controller, preferences, callback){
+			$.ajax({
+				url: WidgetConf.url + controller,
+				type: 'get',
+				data: preferences,
+				dataType: 'json',
+				async: true,
+				crossDomain: true,
+				xhrFields: {
+					withCredentials: false
+				},
+				success: function(data){
+					callback(data);
+				}
+			});
+		},
+		getAverageAndComments: function(avg, callback){
+			console.log('getAverageAndComments');
+			var preferences = {
+				'id':WidgetConf.id,
+				'app':WidgetConf.app,
+				'user':WidgetConf.user,
+				'grvalue':avg
+			};
+			WidgetAPI.doRequest('ControllerGetStar', preferences, callback);
+		}
+	};
+	
+	var WidgetUI = {
+		setWidgetState: function(){
+			var avg = $("#selectgrvalue").val();
+			WidgetAPI.getAverageAndComments(avg, WidgetUI.setWidgetStateCallback);
+		},
+		setWidgetStateCallback: function(data){
+			$("#valuemedia").text(data.value);
+			$("[name=widget_stars_value]").val([data.value]);
+			$("#widget_first_comments_ul, #widget_comments_ul").empty();
+			$.each(data.comments, function(i){
+				var img = '<img src="img/user.png" alt="" height="42" width="42">';
+				var title = '<strong>' + this.title + ' (' + this.value + '/5)</strong>';
+				var comment = '<span>' + this.c + '</span>';
+				var li = $('<li>').html(img + title + '<br/>' + comment);
+				$("#widget_comments_ul").prepend(li);
+				if(!i){
+					$("#widget_first_comments_ul").prepend(li.clone());
+				}
+			});
+		},
+		moreComments: function(){
+			if($('#listComments').is(':hidden')){
+				$('#firstComment').hide();
+				$('#listComments').show();
+				$("#morecomments").text("First Comment");
+				$('#provideoyourrate').hide();
+				$('#buttonprovideoyourrate').show();
+			}
+			else{
+				$('#firstComment').show();
+				$('#listComments').hide();
+				$("#morecomments").text("More Comments");
+			}
+			$("#listofcomments").focus();
+		},
+		provideRate: function(){
+		}
+	};
+	
+	$(document).ready(function(){
+		WidgetUI.setWidgetState();
+		
+		$("#selectgrvalue").on('change', function() {
+			WidgetUI.setWidgetState();
+		});
+		
+		$('#morecomments').on('click', function(){
+			WidgetUI.moreComments();
+		});
+	});
+	
+	
+	
+	
+
+			//var completeForm = false;/* Not in use */
             var app = "ul";
             var user = "4";
             //var urlserverGlobal = "http://193.27.9.220/widget/";
             var urlserverGlobal = "http://localhost:8084/widget/";
             //var urlserverGlobal = "http://saapho:8080/widget/"
-            var imageuser = "http://lorempixum.com/100/100/nature/1";
-            var altimguser = "example of image user";
+            //var imageuser = "http://lorempixum.com/100/100/nature/1"; /* Not in use, commented */
+            //var altimguser = "example of image user"; /* Not in use, commented */
                     
             
             function processError(e , msg){
@@ -78,11 +169,18 @@
             }
             
             function loadValue(){
+				return;//TMP BYPASS
                 var urllocation = $(location).attr('pathname');
                 var grvalue = $("#selectgrvalue").val();
-                
-               var preferences = "";
-               var urlServer2 = urlserverGlobal+ "ControllerGetStar?id="+urllocation+"&app="+app+"&user="+user+"&grvalue="+grvalue;
+                console.log(WidgetConf);
+               var preferences = {
+				   'id':WidgetConf.id,
+				   'app':WidgetConf.app,
+				   'user':WidgetConf.user,
+				   'grvalue':grvalue
+			   };
+               //var urlServer2 = urlserverGlobal+ "ControllerGetStar?id="+urllocation+"&app="+app+"&user="+user+"&grvalue="+grvalue;
+			   var urlServer2 = WidgetConf.url + "ControllerGetStar";
                 
                 var request =  $.ajax({
                     url: urlServer2,//url servicio rest
