@@ -19,6 +19,9 @@
 				},
 				success: function(data){
 					callback(data);
+				},
+				error: function(xhr, msg){
+					console.log(msg);
 				}
 			});
 		},
@@ -35,6 +38,25 @@
 	};
 	
 	var WidgetUI = {
+		initWidget: function(){
+			WidgetUI.setWidgetState();
+			
+			$("#selectgrvalue").on('change', function() {
+				WidgetUI.setWidgetState();
+			});
+			
+			$('#morecomments').on('click', function(){
+				WidgetUI.moreComments();
+			});
+			
+			$('#buttonprovideoyourrate a').on('click', function(){
+				WidgetUI.provideRate();
+			});
+			
+			$('#buttonBack-1, #buttonBack-2').on('click', function(){
+				WidgetUI.resetWidget();
+			});
+		},
 		setWidgetState: function(){
 			var avg = $("#selectgrvalue").val();
 			WidgetAPI.getAverageAndComments(avg, WidgetUI.setWidgetStateCallback);
@@ -70,19 +92,30 @@
 			$("#listofcomments").focus();
 		},
 		provideRate: function(){
+			$('#buttonprovideoyourrate').hide();
+			$('#firstComment').hide();
+			$('#provideoyourrate').show();
+			$("#morecomments").text("More Comments");
+			$('#listComments').hide();
+			$('#firstComment').hide();
+			$("input[name=widget_stars_value_rate]").removeAttr("checked");
+			$("#widget_title_comment").val('');
+			$("#widget_comment").val('');
+			$("#radio_stars5_rate").focus();
+		},
+		resetWidget: function(){
+			$('#buttonprovideoyourrate').show();
+			$('#firstComment').show();
+			$('#provideoyourrate').hide();
+			$('#provideoyourrateok').hide();
+			$('#buttonthankyou').hide();
+			$("#morecomments").text("More Comments");
+			$("#listofcomments").focus();
 		}
 	};
 	
 	$(document).ready(function(){
-		WidgetUI.setWidgetState();
-		
-		$("#selectgrvalue").on('change', function() {
-			WidgetUI.setWidgetState();
-		});
-		
-		$('#morecomments').on('click', function(){
-			WidgetUI.moreComments();
-		});
+		WidgetUI.initWidget();
 	});
 	
 	
@@ -334,7 +367,7 @@
                 });
             };
             
-            
+            /*
             function createWidget(){
                 
                 if(user===''){
@@ -343,7 +376,7 @@
                     $("#widget_feedback").append("<div class='widget_message' id='widget_message_confirmation' style='display:none;'><div id='widget_title_message_confirmation' class='widget_title'>Message</div><h3 id='widget_message_confirmation_h3' style='text-align: center;'>Your evaluation has been registered</h3></div><div class='widget_zoom_comment' id='widget_zoom_comment' style='display:none;'><a href='#' onclick='$(\"#widget_zoom_comment\").hide();' class='widget_linktitle'><span class='visuallyhidden'>Hide </span><div  id='widget_title_list_comment' class='widget_title'>List of Comments &#9658; </div></a><span class='visuallyhidden'><h1>List of Comments</h1></span><ul id='widget_comments_ul' class='widget_comments_ul'></ul></div><div class='widget_zoom_comment' id='widget_your_rate' style='display:none;'><a href='#' onclick='$(\"#widget_your_rate\").hide();' class='widget_linktitle'><div class='widget_title'><span class='visuallyhidden'>Hide </span><h1 class='widget_title_h1'>Your Rate &#9658;</h1></div></a><div style='padding: 10px;'><h1 class='h1styletitle'>Your overall rating of this product</h1><p class='widget_categorization' align='center'><input id='radio_stars1_rate' type='radio' name='widget_stars_value_rate' value='5'><label for='radio_stars1_rate' class='widget_label_50 widget_mouse_pointer'><span class='visuallyhidden'>5 Stars</span>&#9733;</label><input id='radio_stars2_rate' type='radio' name='widget_stars_value_rate' value='4'><label for='radio_stars2_rate' class='widget_label_50 widget_mouse_pointer'><span class='visuallyhidden'>4 Stars</span>&#9733;</label><input id='radio_stars3_rate' type='radio' name='widget_stars_value_rate' value='3'><label for='radio_stars3_rate' class='widget_label_50 widget_mouse_pointer'><span class='visuallyhidden'>3 Stars</span>&#9733;</label><input id='radio_stars4_rate' type='radio' name='widget_stars_value_rate' value='2'><label for='radio_stars4_rate' class='widget_label_50 widget_mouse_pointer'><span class='visuallyhidden'>2 Stars</span>&#9733;</label><input id='radio_stars5_rate' type='radio' name='widget_stars_value_rate' value='1'><label for='radio_stars5_rate' class='widget_label_50 widget_mouse_pointer'><span class='visuallyhidden'>1 Stars</span>&#9733;</label></p><label for='widget_title_comment' class='h1styletitle'>Title of your review</label><input type='text' name='widget_title_comment' id='widget_title_comment' style='width: 450px;margin-bottom:15px;'/><label for='widget_comment' class='h1styletitle'>Your review</label><textarea rows='9' cols='62' name='widget_comment' id='widget_comment'></textarea><br><br><a class='widget_btn_round' href='#' onclick='callWebServiceWithComment();' role='button'>Send Your Rate</a></div></div><!-- Menu PRINCIPAL--><div class='widget_stars' id='widget_stars'><a href='#' onclick='$(\"#widget_your_rate\").hide();$(\"#widget_zoom_comment\").hide();$(\"#widget_content\").slideToggle(\"slow\");' class='widget_linktitle'><div  id='widget_title' class='widget_title'>Feedback &#9650; &#9660;</div></a><div id='widget_content' class='widget_content'><span class='visuallyhidden' id='widget_media_rating'></span><span aria-hidden='true'><p class='widget_categorization' align='center'><input id='radio_stars1' type='radio' name='widget_stars_value' value='5'><label for='radio_stars1' class='widget_label widget_mouse_pointer'><span class='visuallyhidden'>5 Stars</span>&#9733;</label><input id='radio_stars2' type='radio' name='widget_stars_value' value='4'><label for='radio_stars2' class='widget_label widget_mouse_pointer'><span class='visuallyhidden'>4 Stars</span>&#9733;</label><input id='radio_stars3' type='radio' name='widget_stars_value' value='3'><label for='radio_stars3' class='widget_label widget_mouse_pointer'><span class='visuallyhidden'>3 Stars</span>&#9733;</label><input id='radio_stars4' type='radio' name='widget_stars_value' value='2'><label for='radio_stars4' class='widget_label widget_mouse_pointer'><span class='visuallyhidden'>2 Stars</span>&#9733;</label><input id='radio_stars5' type='radio' name='widget_stars_value' value='1'><label for='radio_stars5' class='widget_label widget_mouse_pointer'><span class='visuallyhidden'>1 Stars</span>&#9733;</label></p></span><div id='widget_options' class='widget_options'><ul class='widget_options_ul'><li class='widget_options_li'><a href='#' class='widget_btn' onclick='loadyourrate();' role='button'>Your Rate</a></li><li class='widget_options_li'><a href='#' class='widget_btn' onclick='loadlistcomments();' role='button'>Comments</a></li><!--<li class='widget_options_li'><a href='#' class='widget_btn' onclick='' role='button'>Bug tracking</a></li><li class='widget_options_li'><a href='#' class='widget_btn' onclick='' role='button'>Ideation</a></li>--></ul></div></div></div><!-- FIN Menu PRINCIPALLL-->");
                 }
             }
-            
+            */
             function loadmorecomments(){
                 var text = $("#morecomments").text();
                 
@@ -394,7 +427,7 @@
                 $('#provideoyourrate').hide();
                 $('#provideoyourrateok').hide();
                 $('#buttonthankyou').hide();
-                $("#widget_content").attr("style", "height:350px;");
+                //$("#widget_content").attr("style", "height:350px;");
                 $("#morecomments").html("More Comments");
                 
                 $("#listofcomments").focus();
@@ -420,11 +453,11 @@
             }
             
             
-            
+            /*
             $(window).load(function() {
                    loadValue();
             });
-            
+            */
             $(document).ready(function() { 
 
                 /*$('.span1').focusin(function() {
@@ -440,11 +473,11 @@
                 $('.ahref').click(function(e) {
                     e.preventDefault();
                 });        
-                
+                /*
                $("#selectgrvalue").change(function() {
                 loadValue();
                });
-                
+                */
             });
             
                 
