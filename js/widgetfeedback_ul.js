@@ -26,7 +26,6 @@
 			});
 		},
 		getAverageAndComments: function(avg, callback){
-			console.log('getAverageAndComments');
 			var preferences = {
 				'id':WidgetConf.id,
 				'app':WidgetConf.app,
@@ -34,6 +33,17 @@
 				'grvalue':avg
 			};
 			WidgetAPI.doRequest('ControllerGetStar', preferences, callback);
+		},
+		setRateAndComment: function(rate, title, comment, callback){
+			var preferences = {
+				'id':WidgetConf.id,
+				'app':WidgetConf.app,
+				'user':WidgetConf.user,
+				'star':rate,
+				'titlecomment': title,
+				'comment': comment
+			};
+			WidgetAPI.doRequest('ControllerStar', preferences, callback);
 		}
 	};
 	
@@ -53,8 +63,12 @@
 				WidgetUI.provideRate();
 			});
 			
-			$('#buttonBack-1, #buttonBack-2').on('click', function(){
+			$('#buttonBack, #buttonOk').on('click', function(){
 				WidgetUI.resetWidget();
+			});
+			
+			$('#buttonSend').on('click', function(){
+				WidgetUI.addRateAndComment();
 			});
 		},
 		setWidgetState: function(){
@@ -75,6 +89,25 @@
 					$("#widget_first_comments_ul").prepend(li.clone());
 				}
 			});
+		},
+		addRateAndComment: function(){
+			var rate = $('input[name=widget_stars_value_rate]:checked').val();
+			if(typeof rate !== 'undefined'){
+				var title = $('#widget_title_comment').val();
+				var comment = $('#widget_comment').val();
+				WidgetAPI.setRateAndComment(rate, title, comment, WidgetUI.addRateAndCommentCallback);
+			}
+			else{
+				/*@todo:set errors on widget itself, don't use an alert */
+				alert('You must select a rating from 1 to 5 stars');
+			}
+		},
+		addRateAndCommentCallback: function(){
+			WidgetUI.setWidgetState();
+			$("#provideoyourrate").hide();
+			$("#provideoyourrateok").show();
+			$("#buttonthankyou").show();
+			$("#provideoyourrateok").focus();
 		},
 		moreComments: function(){
 			if($('#listComments').is(':hidden')){
@@ -202,7 +235,7 @@
             }
             
             function loadValue(){
-				return;//TMP BYPASS
+				//return;//TMP BYPASS
                 var urllocation = $(location).attr('pathname');
                 var grvalue = $("#selectgrvalue").val();
                 console.log(WidgetConf);
@@ -297,9 +330,9 @@
             
             
             function loadmessage(){
-                loadyourrate();
-                $("#widget_message_confirmation").show();
-                setTimeout(hideMessage, 2000);
+                //loadyourrate();
+                //$("#widget_message_confirmation").show();
+                //setTimeout(hideMessage, 2000);
                 $("#provideoyourrate").hide();
                 $("#provideoyourrateok").show();
                 $("#buttonthankyou").show();
