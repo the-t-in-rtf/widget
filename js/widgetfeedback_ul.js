@@ -1,3 +1,7 @@
+	/**
+	 * Widget
+	 * Conf, API, UI, Init
+	 */
 	var WidgetConf = {
 		url:  'http://localhost:8084/widget/',
 		app:  'ul',
@@ -57,18 +61,22 @@
 			
 			$('#morecomments').on('click', function(){
 				WidgetUI.moreComments();
+				return false;
 			});
 			
 			$('#buttonprovideoyourrate a').on('click', function(){
 				WidgetUI.provideRate();
+				return false;
 			});
 			
 			$('#buttonBack, #buttonOk').on('click', function(){
 				WidgetUI.resetWidget();
+				return false;
 			});
 			
 			$('#buttonSend').on('click', function(){
 				WidgetUI.addRateAndComment();
+				return false;
 			});
 		},
 		setWidgetState: function(){
@@ -149,73 +157,26 @@
 	
 	$(document).ready(function(){
 		WidgetUI.initWidget();
-		/* test */
-		$('.ahref').click(function(e) {
-			e.preventDefault();
-		}); 
-		/**/
 	});
 	
-
-    /* test */
-	$(".readonly:radio").on("click", function(){
-		return false;
-	});
-	
-	
-	function loadlistcommentsDefault(){    
-		var maxChars = 520;
-		var ellipsis = "...";
-		$(".widget_article").each(function() {
-			var text = $(this).find(".widget_text.full").text();
-			var html = $(this).find(".widget_text.full").html();        
-			if(text.length > maxChars)
-			{            
-				var shortHtml = html.substring(0, maxChars - 3) + "<span class='widget_ellipsis'>" + ellipsis + "</span>";
-				$(this).find(".widget_text.short").html(shortHtml);            
-			}else{
-				var shortHtml = $(this).find(".widget_text.full").text();
-				$(this).find(".widget_text.short").html(shortHtml);
-				$(this).find(".widget_read-more").hide();
-			}
-		});
-		$(".widget_read-more").click(function(){        
-			var readMoreText = "readmore";
-			var readLessText = "readless";        
-			var $shortElem = $(this).parent().find(".widget_text.short");
-			var $fullElem = $(this).parent().find(".widget_text.full");        
-
-			if($shortElem.is(":visible"))
-			{           
-				$shortElem.hide();
-				$fullElem.show();
-				$(this).text(readLessText);
-			}
-			else
-			{
-				$shortElem.show();
-				$fullElem.hide();
-				$(this).text(readMoreText);
-			}       
-		});
-	};
-	
+	/**
+	 * Unified Listing Interface
+	 * Select User
+	 */
 	function loadusermenu(){
 		$('#user-menu').toggle();
 	}
 	
 	function selectuser(usercode){
-		 if(usercode===1){
-			 $('#username').html('Nacho');
-			 user = "1";
-		 }else if(usercode===2){
-			 $('#username').html('Esteban');
-			 user = "2";
-		 }else if(usercode===3){
-			 $('#username').html('Manuel');
-			 user = "3";
-		 }
-		 $('#user-menu').toggle();
-		
+		if(usercode === 1){
+			$('#username').html('Nacho');
+			WidgetConf.user = '1';
+		}else if(usercode === 2){
+			$('#username').html('Esteban');
+			WidgetConf.user = '2';
+		}else if(usercode === 3){
+			$('#username').html('Manuel');
+			WidgetConf.user = '3';
+		}
+		$('#user-menu').toggle();
 	}
-	/**/
