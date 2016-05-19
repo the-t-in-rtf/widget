@@ -1,7 +1,60 @@
+/* Stars */
+.widget_label{ 
+	color: #000;
+	font-size: 50px;
+	margin: 0px !important;
+	position:relative;
+}
+
+.widget_categorization input:checked ~ label{
+	color:#fff;
+}
+
+.widget_categorization input:checked ~ label:after{
+	color:#000;
+	content: "\2606";
+	position: absolute;
+	left: 0;
+}
+
+.widget_categorization input:checked + label{
+	color:#000;
+}
+
+.widget_categorization:hover input + label{
+	color:#000 !important;
+}
+
+.widget_categorization:hover input + label:after{
+	
+}
+
+.widget_categorization label:hover ~ label,
+.widget_categorization label:hover + label{
+	color:#fff !important;
+}
+
+.widget_categorization label:hover ~ label:after,
+.widget_categorization label:hover + label:after{
+	color:#000;
+	content: "\2606";
+	position: absolute;
+	left: 0;
+}
+
+
+/* Helpers */
+.visuallyhidden { 
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+}
+
 
       /*input[name=widget_stars_value]{display: none;pointer-events: none;}
             input[name=widget_stars_value]:checked ~ .widget_label{color:black;pointer-events: none;}*/
-            
+            /*
             input#radio_stars5_rate::before{
                 display:none;
             }
@@ -101,7 +154,7 @@
                left: 0;
                color: black;
             }
-            
+            */
             /*.widget_label_50:hover > span[class~="span1"]:after{
                 content: "\2606" !important;
                 color:#000000;
@@ -167,9 +220,9 @@
             }*/
             
                 .widget_categorization{
-                    direction: rtl;
+                    /*direction: rtl;
                     unicode-bidi: bidi-override;
-                    text-align: center;
+                    text-align: center;*/
                     /*border-bottom: groove #000000;
                     margin:10px;*/
 
@@ -315,11 +368,11 @@
               .widget_linktitle{
                   text-decoration: none;
               }
-              
+              /*
               .widget_mouse_pointer{
                   cursor: pointer;
               }
-              
+              */
               .widget_options{
                   width: 95%;
               }
@@ -421,13 +474,7 @@
                     font-size: 14px;
                 }
                 
-                .visuallyhidden { 
-                    position: absolute; 
-                    overflow: hidden; 
-                    clip: rect(0 0 0 0); 
-                    height: 1px; width: 1px; 
-                    margin: -1px; padding: 0; border: 0; 
-                  }
+
                   
                   .h1styletitle{
                        font-size: 1.17em;
