@@ -1,9 +1,107 @@
+/* Widget */
+.widget_stars{
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	z-index: 16000002;
+	width: 350px;
+	position: fixed;
+	top: 45px;
+	right: 0px;
+	background-color: #fff;
+	border: 1px solid #b7bdb9;
+}
+
+.widget_stars h1{
+	text-align: center;
+	margin-top: 15px;
+	font-weight: bold;
+	font-size: 18px;
+	margin-bottom: -0.5rem;
+}
+
+.widget_stars  #valoration_select h2{
+	color: #000;
+	margin: 10px;
+	border-bottom: 2px solid #000;
+	font-size: 16px;
+}
+
+.widget_stars #valoration{
+	width: 50px;
+	height: 40px;
+	font-size: 15px;
+}
+
+.widget_stars .comments{
+	margin: 10px;
+	border-bottom: 2px solid #000000;
+}
+
+.widget_stars .comments ul{
+	list-style-type:none;
+}
+
+.widget_stars #listComments{
+	overflow: auto;
+	/*height:285px;*/
+	display: none;
+}
+
+.widget_stars #provideoyourrate {
+	margin: 0px 10px;
+}
+
+.widget_stars #provideoyourrate h2{
+	color: #000;
+	margin: 10px 0px;
+	border-bottom: 2px solid #000000;
+	font-size: 16px;
+}
+
+.widget_stars #provideoyourrate h3{
+	color: #000;
+	margin: 10px 0px;
+	font-size: 14px;
+}
+
+.widget_stars #provideoyourrateok{
+	display:none;
+	text-align:center;
+}
+
+.widget_stars #provideoyourrateok > p:first-child{
+	background-color:#43ac6a; 
+	color:#fff;
+	margin:0px 10px 20px 10px;
+	padding:50px 0px;
+}
+
+.widget_stars .blue_button{
+	color: #fff;
+	background-color: #337ab7;
+	border-color: #2e6da4;
+	padding: 6px 12px;
+}
+
+.widget_stars .green_button{
+	color: #fff;
+	background-color: #006633;
+	border-color: #2e6da4;
+	padding: 6px 12px;
+}
+
 /* Stars */
 .widget_label{ 
 	color: #000;
 	font-size: 50px;
 	margin: 0px !important;
 	position:relative;
+	border-bottom:2px dotted transparent;
+}
+
+.widget_categorization input:focus + label{
+	border-bottom:2px dotted #666;
 }
 
 .widget_categorization input:checked ~ label{
@@ -42,13 +140,21 @@
 	left: 0;
 }
 
-
 /* Helpers */
 .visuallyhidden { 
     clip: rect(1px, 1px, 1px, 1px);
     height: 1px;
     overflow: hidden;
     position: absolute !important;
+}
+
+.alignright{
+	text-align:right;
+	margin-right:10px;
+}
+
+.aligncenter{
+	text-align:center;
 }
 
 
@@ -232,7 +338,7 @@
                 overflow-y: auto;
                 max-height: 280px; 
             }
-            
+            /*
             .widget_zoom_comment{
                 position: fixed;
                 right: 0px;
@@ -248,7 +354,7 @@
                 border-style: solid;
                 border-width: 1px;
             }
-            
+            */
             .widget_message{
                 position: fixed;
                 right: 0px;
@@ -266,24 +372,7 @@
                 border-width: 3px;
             }
             
-            .widget_stars{
-                margin-top: 0px;
-                margin-right: 0px;
-                margin-bottom: 0px;
-                padding: 0px;
-                border: 0px;
-                overflow: hidden;
-                position: fixed;
-                z-index: 16000002;
-                width: 350px;
-                right: 0px;
-                top: 45px;
-                background: transparent;
-                background-color: #ffffff;
-                border-color: #b7bdb9;
-                border-style: solid;
-                border-width: 1px;
-            }
+
             
             .widget_content{
                 /*height: 350px;*/
@@ -353,7 +442,7 @@
                 background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
                 text-decoration: none;
               }
-              
+              /*
               .widget_title{
                   background-color: #88898e; 
                   text-align:center;
@@ -367,7 +456,7 @@
               
               .widget_linktitle{
                   text-decoration: none;
-              }
+              }*/
               /*
               .widget_mouse_pointer{
                   cursor: pointer;
@@ -396,7 +485,7 @@
               .margin20 {
                 margin: 20px;
               }
-
+				/*
               .widget_comments_ul {
                 list-style-type: none;
                 width: 490px;
@@ -405,7 +494,7 @@
                 overflow-y: auto;
                 max-height: 460px;
               }
-
+*/
               .widget_comments_h3 {
                 font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
                 margin: 1px;
@@ -480,7 +569,7 @@
                        font-size: 1.17em;
                        font-weight: bold;
                   }
-                  
+                  /*
                   .widget_title_h1{
                           -webkit-margin-before: 0em;
                           -webkit-margin-after: 0em;
@@ -490,7 +579,7 @@
                           font-weight: normal;
                           margin:0px;
                   }
-                  
+                  */
                   /*#loading {
                     background: url("loading.gif");
                     opacity: 0.5;
@@ -503,14 +592,7 @@
                     left: 0;
                     top: 0;
                    }*/
-                  
-                  .titlewidget{
-                      text-align: center;
-                      margin-top: 15px;
-                      font-weight: bold;
-                      font-size: 18px;
-                      margin-bottom: -0.5rem;
-                  }
+
                   
                   .borderbottonminiline{
                       width: 100%;
@@ -521,62 +603,56 @@
                       border-bottom: groove #000000;
                   }
                   
-                  .styletextcomments{
-                      color: #000000;
-                      margin: 10px;
-                      border-bottom: solid #000000;
-                      border-width:2px;
-                      font-size: 16px;
-                  }
-                  
+
+                  /*
                   .stylefirstcomment{
                       margin: 10px;
                       border-bottom: solid #000000;
                       border-width:2px;
-                  }
-                  
+                  }*/
+                  /*
                   .stylefontsize14{
                       font-size: 14px;
                   }
-                  
+                  *//*
                   .stylelistcomments{
                       margin: 10px;
                       border-bottom: solid #000000;
                       border-width:2px;
                       overflow: auto;
-                      /*height:285px;*/
+                      height:285px;
                       display: none;
-                  }
-                  
+                  }*/
+                  /*
                   .styleul{
                       list-style-type: none;
                   }
-                  
+                  *//*
                   .stylemarginrigth10{
                       margin-right: 10px;
-                  }
-                  
+                  }*/
+                  /*
                   .stylelicommets{
                       border-top: solid #000000;
                       border-width:1px;
                       padding-top: 5px;
                   }
-                  
+                  *//*
                   .styletitleproviderate{
                       color: #000000;
                       margin: 10px;
                       border-bottom: solid #000000;
                       border-width:2px;
                       font-size: 16px;
-                  }
+                  }*/
                   
-                  
+                  /*
                   .styleproviderate{
                       color: #000000;
                       margin: 10px;
                       font-size: 14px;
-                  }
-                  
+                  }*/
+                  /*
                   .styletitlemyreview{
                       color: #000000;
                       margin: 10px;
@@ -606,21 +682,22 @@
                       margin: 10px;
                       font-size: 14px;
                   }
-                  
+                  */
+				  /*
                   .stylebuttonback{
                       color: #fff;
                       background-color: #337ab7;
                       border-color: #2e6da4;
                       padding: 6px 12px;
                   }
-                  
+                  *//*
                   .stylebuttonsend{
                       color: #fff;
                       background-color: #006633;
                       border-color: #2e6da4;
                       padding: 6px 12px;
-                  }
-                  
+                  }*/
+                  /*
                   .styleprovideoyourrateok{
                       background-color:#43AC6A; 
                       color:#FFFFFF;
@@ -630,4 +707,4 @@
                       padding-top: 90px;
                       display: none;
                   }
-                  
+                  */

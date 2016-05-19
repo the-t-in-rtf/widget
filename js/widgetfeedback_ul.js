@@ -55,7 +55,7 @@
 		initWidget: function(){
 			WidgetUI.setWidgetState();
 			
-			$("#selectgrvalue").on('change', function() {
+			$("#valoration").on('change', function() {
 				WidgetUI.setWidgetState();
 			});
 			
@@ -64,7 +64,7 @@
 				return false;
 			});
 			
-			$('#buttonprovideoyourrate a').on('click', function(){
+			$('#buttonRate').on('click', function(){
 				WidgetUI.provideRate();
 				return false;
 			});
@@ -80,7 +80,7 @@
 			});
 		},
 		setWidgetState: function(){
-			var avg = $("#selectgrvalue").val();
+			var avg = $("#valoration").val();
 			WidgetAPI.getAverageAndComments(avg, WidgetUI.setWidgetStateCallback);
 		},
 		setWidgetStateCallback: function(data){
@@ -114,7 +114,6 @@
 			WidgetUI.setWidgetState();
 			$("#provideoyourrate").hide();
 			$("#provideoyourrateok").show();
-			$("#buttonthankyou").show();
 			$("#provideoyourrateok").focus();
 		},
 		moreComments: function(){
@@ -130,7 +129,7 @@
 				$('#listComments').hide();
 				$("#morecomments").text("More Comments");
 			}
-			$("#listofcomments").focus();
+			$("#valoration_select").focus();
 		},
 		provideRate: function(){
 			$('#buttonprovideoyourrate').hide();
@@ -139,7 +138,7 @@
 			$("#morecomments").text("More Comments");
 			$('#listComments').hide();
 			$('#firstComment').hide();
-			$("input[name=widget_stars_rate]").removeAttr("checked");/* Radio reference */
+			//$("input[name=widget_stars_rate]").removeAttr("checked");/* Radio reference */
 			$("#widget_title_comment").val('');
 			$("#widget_comment").val('');
 			$("#widget_stars_rate_1").focus();/* Radio reference */
@@ -149,9 +148,8 @@
 			$('#firstComment').show();
 			$('#provideoyourrate').hide();
 			$('#provideoyourrateok').hide();
-			$('#buttonthankyou').hide();
 			$("#morecomments").text("More Comments");
-			$("#listofcomments").focus();
+			$("#valoration_select").focus();
 		}
 	};
 	
