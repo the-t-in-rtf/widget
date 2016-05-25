@@ -4,6 +4,7 @@
 	 */
 	var WidgetConf = {
 		url:  'http://localhost:8084/widget/',
+		/*url:  'http://193.27.9.220/widget/',*/
 		app:  'ul',
 		user: '4',
 		id:   $(location).attr('pathname')
@@ -87,16 +88,24 @@
 			$("#valuemedia").text(data.value);
 			$("[name=widget_stars_value]").val([data.value]);/* Radio reference */
 			$("#widget_first_comments_ul, #widget_comments_ul").empty();
-			$.each(data.comments, function(i){
-				var img = '<img src="img/user.png" alt="" height="42" width="42">';
-				var title = '<strong>' + this.title + ' (' + this.value + '/5)</strong>';
-				var comment = '<span>' + this.c + '</span>';
-				var li = $('<li>').html(img + title + '<br/>' + comment);
+			if(data.comments.length){
+				$.each(data.comments, function(i){
+					var img = '<img src="img/user.png" alt="" height="42" width="42">';
+					var title = '<strong>' + this.title + ' (' + this.value + '/5)</strong>';
+					var comment = '<span>' + this.c + '</span>';
+					var li = $('<li>').html(img + title + '<br/>' + comment);
+					$("#widget_comments_ul").prepend(li);
+					if(!i){
+						$("#widget_first_comments_ul").prepend(li.clone());
+					}
+				});
+			}
+			else{
+				console.log('else' + data.comments.length);
+				var li = $('<li>').html('<strong>There are not comments whith this valoration yet</strong>');
 				$("#widget_comments_ul").prepend(li);
-				if(!i){
-					$("#widget_first_comments_ul").prepend(li.clone());
-				}
-			});
+				$("#widget_first_comments_ul").prepend(li.clone());
+			}
 		},
 		addRateAndComment: function(){
 			var rate = $('input[name=widget_stars_rate]:checked').val();/* Radio reference */
