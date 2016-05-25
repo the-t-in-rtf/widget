@@ -101,8 +101,7 @@
 				});
 			}
 			else{
-				console.log('else' + data.comments.length);
-				var li = $('<li>').html('<strong>There are not comments whith this valoration yet</strong>');
+				var li = $('<li>').html('<strong>There are no comments whith this valoration yet</strong>');
 				$("#widget_comments_ul").prepend(li);
 				$("#widget_first_comments_ul").prepend(li.clone());
 			}
