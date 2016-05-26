@@ -87,6 +87,11 @@
 				WidgetUI.addRateAndComment();
 				return false;
 			});
+			
+			$('#buttonDelete').on('click', function(){
+				WidgetUI.deleteRate();
+				return false;
+			});
 		},
 		setWidgetState: function(){
 			var avg = $("#valoration").val();
@@ -96,14 +101,15 @@
 			$("#valuemedia").text(data.value);
 			$("[name=widget_stars_value]").val([data.value]);
 			$("#widget_first_comments_ul, #widget_comments_ul").empty();
+			$('#buttonDelete').hide();
 			if(data.comments.length){
 				$.each(data.comments, function(i){
-					console.log(this.user + ' - ' + WidgetConf.user);
 					if(this.user == WidgetConf.user){
 						$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
 							WidgetUI.editRate();
 							return false;
 						});
+						$('#buttonDelete').show();
 					}
 					var img = '<img src="img/user.png" alt="" height="42" width="42">';
 					var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
@@ -178,10 +184,10 @@
 			$("#widget_stars_rate_1").focus();
 		},
 		deleteRate: function(){
-			WidgetAPI.deleteRateAndComment(WidgetUI.deleteRateAndCommentCallback);
+			WidgetAPI.deleteRateAndComment(WidgetUI.deleteRateCallback);
 		},
 		deleteRateCallback: function(){
-			console.log('delete');
+			WidgetUI.setWidgetState();
 		},
 		resetWidget: function(){
 			$('#buttonprovideoyourrate').show();
@@ -225,5 +231,6 @@
 			WidgetUI.provideRate();
 			return false;
 		});
+		$('#buttonDelete').hide();
 		WidgetUI.setWidgetState();
 	}
