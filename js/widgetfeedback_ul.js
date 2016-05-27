@@ -49,6 +49,14 @@
 				'comment': comment
 			};
 			WidgetAPI.doRequest('ControllerStar', preferences, callback);
+		},
+		deleteRateAndComment: function(callback){
+			var preferences = {
+				'id':WidgetConf.id,
+				'app':WidgetConf.app,
+				'user':WidgetConf.user
+			};
+			WidgetAPI.doRequest('ControllerDeleteStar', preferences, callback);
 		}
 	};
 	
@@ -79,6 +87,11 @@
 				WidgetUI.addRateAndComment();
 				return false;
 			});
+			
+			$('#buttonDelete').on('click', function(){
+				WidgetUI.deleteRate();
+				return false;
+			});
 		},
 		setWidgetState: function(){
 			var avg = $("#valoration").val();
@@ -86,14 +99,22 @@
 		},
 		setWidgetStateCallback: function(data){
 			$("#valuemedia").text(data.value);
-			$("[name=widget_stars_value]").val([data.value]);/* Radio reference */
+			$("[name=widget_stars_value]").val([data.value]);
 			$("#widget_first_comments_ul, #widget_comments_ul").empty();
+			$('#buttonDelete').hide();
 			if(data.comments.length){
 				$.each(data.comments, function(i){
+					if(this.user == WidgetConf.user){
+						$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
+							WidgetUI.editRate();
+							return false;
+						});
+						$('#buttonDelete').show();
+					}
 					var img = '<img src="img/user.png" alt="" height="42" width="42">';
-					var title = '<strong>' + this.title + ' (' + this.value + '/5)</strong>';
+					var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
 					var comment = '<span>' + this.c + '</span>';
-					var li = $('<li>').html(img + title + '<br/>' + comment);
+					var li = $('<li>').html(img + title + '<br/>' + comment).addClass('user-' + this.user);
 					$("#widget_comments_ul").prepend(li);
 					if(!i){
 						$("#widget_first_comments_ul").prepend(li.clone());
@@ -107,7 +128,7 @@
 			}
 		},
 		addRateAndComment: function(){
-			var rate = $('input[name=widget_stars_rate]:checked').val();/* Radio reference */
+			var rate = $('input[name=widget_stars_rate]:checked').val();
 			if(typeof rate !== 'undefined'){
 				var title = $('#widget_title_comment').val();
 				var comment = $('#widget_comment').val();
@@ -130,7 +151,6 @@
 				$('#listComments').show();
 				$("#morecomments").text("First Comment");
 				$('#provideoyourrate').hide();
-				$('#buttonprovideoyourrate').show();
 			}
 			else{
 				$('#firstComment').show();
@@ -146,10 +166,28 @@
 			$("#morecomments").text("More Comments");
 			$('#listComments').hide();
 			$('#firstComment').hide();
-			//$("input[name=widget_stars_rate]").removeAttr("checked");/* Radio reference */
 			$("#widget_title_comment").val('');
 			$("#widget_comment").val('');
-			$("#widget_stars_rate_1").focus();/* Radio reference */
+			$("#widget_stars_rate_1").focus();
+		},
+		editRate: function(){
+			$('#buttonprovideoyourrate').hide();
+			$('#firstComment').hide();
+			$('#provideoyourrate').show();
+			$("#morecomments").text("More Comments");
+			$('#listComments').hide();
+			$('#firstComment').hide();
+			var title = $('#listComments li.user-' + WidgetConf.user + ' strong span').text();
+			$("#widget_title_comment").val(title);
+			var comment = $('#listComments li.user-' + WidgetConf.user + ' > span').text();
+			$("#widget_comment").val(comment);
+			$("#widget_stars_rate_1").focus();
+		},
+		deleteRate: function(){
+			WidgetAPI.deleteRateAndComment(WidgetUI.deleteRateCallback);
+		},
+		deleteRateCallback: function(){
+			WidgetUI.setWidgetState();
 		},
 		resetWidget: function(){
 			$('#buttonprovideoyourrate').show();
@@ -183,6 +221,16 @@
 		}else if(usercode === 3){
 			$('#username').html('Manuel');
 			WidgetConf.user = '3';
+		}else if(usercode === 4){
+			$('#username').html('Pablo');
+			WidgetConf.user = '4';
 		}
 		$('#user-menu').toggle();
+		WidgetUI.resetWidget();
+		$('#buttonRate').off('click').text('Write a comment and rate it').on('click', function(){
+			WidgetUI.provideRate();
+			return false;
+		});
+		$('#buttonDelete').hide();
+		WidgetUI.setWidgetState();
 	}
