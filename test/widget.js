@@ -1,0 +1,3 @@
+describe('Widget', function(){
+	
+});
