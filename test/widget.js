@@ -154,6 +154,35 @@ describe('Widget', function(){
 	});
 	
 	describe('Write a comment and rate it', function(){
+		
+		beforeEach(function(){
+			spyOn(WidgetUI, 'provideRate').and.callThrough();
+			ButtonRate = spyOnEvent('#buttonRate', 'click');
+			$('#buttonRate').click();
+		});
+		
+		it('Button rate click should be triggered, event stopped and WidgetUI.provideRate called', function(){
+			expect(ButtonRate).toHaveBeenTriggered();
+			expect(ButtonRate).toHaveBeenStopped();
+			expect(WidgetUI.provideRate).toHaveBeenCalled();
+		});
+		
+		it('Should show rate form and hide write comment button, comments and show comments', function(){
+			expect($('#provideoyourrate')).toBeVisible();
+			expect($('#firstComment')).toBeHidden();
+			expect($('#listComments')).toBeHidden();
+			expect($('#buttonRate')).toBeHidden();
+			expect($('#buttonDelete')).toBeHidden();
+		});
+		
+		it('Title and comment should be empty', function(){
+			expect($('#widget_title_comment')).toHaveValue('');
+			expect($('#widget_comment')).toHaveValue('');
+		});
+		
+		it('Rate should have value of 1', function(){
+			expect($('#widget_stars_rate_1')).toHaveValue('1');
+		});
 	});
 	
 });
