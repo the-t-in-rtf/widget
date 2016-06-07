@@ -181,8 +181,89 @@ describe('Widget', function(){
 		});
 		
 		it('Rate should have value of 1', function(){
-			expect($('#widget_stars_rate_1')).toHaveValue('1');
+			expect($('#widget_stars_rate_1')).toBeChecked();
 		});
+	});
+	
+	describe('Send comment and rate', function(){
+		
+		beforeEach(function(){
+			spyOn(WidgetUI, 'addRateAndComment').and.callThrough();
+			spyOn(WidgetAPI, 'setRateAndComment').and.callThrough();
+			spyOn(WidgetUI, 'addRateAndCommentCallback').and.callThrough();
+			spyOn(WidgetUI, 'resetWidget').and.callThrough();
+			ButtonSend = spyOnEvent('#buttonSend', 'click');
+			ButtonOk = spyOnEvent('#buttonOk', 'click');
+			$('#buttonRate').click();
+			$('#widget_stars_rate_3').attr('checked', true);
+			$('#widget_title_comment').val('Title');
+			$('#widget_comment').val('Comment');
+		});
+		
+		it('Should have form elements filled', function(){
+			expect($('#widget_title_comment')).toHaveValue('Title');
+			expect($('#widget_comment')).toHaveValue('Comment');
+			expect($('#widget_stars_rate_3')).toBeChecked();
+		});
+		
+		it('Send button should be clicked, WidgetUI.addRateAndComment and WidgetAPI.setRateAndComment called', function(){
+			$('#buttonSend').click();
+			expect(ButtonSend).toHaveBeenTriggered();
+			expect(WidgetUI.addRateAndComment).toHaveBeenCalled();
+			expect(WidgetAPI.setRateAndComment).toHaveBeenCalledWith('3', 'Title', 'Comment', WidgetUI.addRateAndCommentCallback);
+		});
+		
+		it('Should call WidgetUI.addRateAndCommentCallback', function(){
+			$('#buttonSend').click();
+			expect(WidgetUI.addRateAndCommentCallback).toHaveBeenCalledWith({value:3,comments:[]});
+		});
+		
+		it('Should show Thank you text and OK button', function(){
+			$('#buttonSend').click();
+			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
+			expect($('#provideoyourrate')).toBeHidden();
+			expect($('#provideoyourrateok')).toBeVisible();
+			expect($('#provideoyourrateok')).toBeFocused();
+		});
+		
+		it('Should reset interface after clicking OK button', function(){
+			$('#buttonSend').click();
+			$('#buttonOk').click();
+			expect(ButtonOk).toHaveBeenTriggered();
+			expect(WidgetUI.resetWidget).toHaveBeenCalled();
+			expect($('#buttonprovideoyourrate')).toBeVisible();
+			expect($('#firstComment')).toBeVisible();
+			expect($('#provideoyourrateok')).toBeHidden();
+			expect($('#morecomments')).toContainText('More Comments');
+			expect($('#valoration_select')).toBeFocused();
+		});
+		
+	});
+	
+	describe('Delete button', function(){
+		beforeEach(function(){
+			spyOn(WidgetUI, 'deleteRate').and.callThrough();
+			spyOn(WidgetAPI, 'deleteRateAndComment').and.callThrough();
+			spyOn(WidgetUI, 'deleteRateCallback').and.callThrough();
+			ButtonDelete = spyOnEvent('#buttonDelete', 'click');
+			$('#buttonDelete').click();
+		});
+		
+		it('Should click button delete', function(){
+			expect(ButtonDelete).toHaveBeenTriggered();
+		});
+		
+		it('Should call, WidgetUI.deleteRate, WidgetApi.deleteRateAndComment and WidgetApi.deleteRateCallback', function(){
+			expect(ButtonDelete).toHaveBeenTriggered();
+			expect(WidgetUI.deleteRate).toHaveBeenCalled();
+			expect(WidgetAPI.deleteRateAndComment).toHaveBeenCalledWith(WidgetUI.deleteRateCallback);
+			expect(WidgetUI.deleteRateCallback).toHaveBeenCalled();
+		});
+		
+		it('Should refresh the widget', function(){
+			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
+		});
+		
 	});
 	
 });
