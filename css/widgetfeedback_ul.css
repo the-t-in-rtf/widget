@@ -26,6 +26,30 @@
 	margin:-20px auto 20px auto;
 }
 
+.widget_stars #histogram{
+	position:relative;
+	margin:0px 10px;
+	text-align:center;
+}
+
+.widget_stars #histogram table{
+	position:absolute;
+	box-shadow:1px 1px 3px #ccc;
+	width:100%;
+	display:none;
+}
+
+.widget_stars #histogram table th{
+	width:25%;
+}
+
+.widget_stars #histogram table td span{
+	background-color:#008cba ;
+	display:block;
+	color:#fff;
+	box-shadow:1px 1px 3px #ccc;
+}
+
 .widget_stars  #valoration_select h2{
 	color: #000;
 	margin: 10px;

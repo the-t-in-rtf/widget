@@ -39,6 +39,7 @@ describe('Widget', function(){
 			expect($('#buttonOk')).toHandle('click');
 			expect($('#buttonSend')).toHandle('click');
 			expect($('#buttonDelete')).toHandle('click');
+			expect($('#buttonHistogram')).toHandle('click');
 		});
 		
 		it('Should call WidgetAPI.getAverageAndComments', function(){
@@ -99,8 +100,8 @@ describe('Widget', function(){
 			var data = {
 				value:3, 
 				comments: [
-					{title: '', comment: '', user: '4'},
-					{title: '', comment: '', user: '1'}
+					{title: '', comment: '', user: '4', value: 3},
+					{title: '', comment: '', user: '1', value: 3}
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
@@ -129,8 +130,8 @@ describe('Widget', function(){
 			var data = {
 				value:3, 
 				comments: [
-					{title: '', comment: '', user: '1'},
-					{title: '', comment: '', user: '1'}
+					{title: '', comment: '', user: '1', value: 3},
+					{title: '', comment: '', user: '1', value: 3}
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
@@ -264,6 +265,43 @@ describe('Widget', function(){
 			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
 		});
 		
+	});
+	
+	describe('Histogram', function(){
+		
+		beforeEach(function(){
+			var data = {
+				value:3, 
+				comments: [
+					{title: '', comment: '', user: '1', value: 3},
+					{title: '', comment: '', user: '1', value: 3}
+				]
+			};
+			WidgetUI.setWidgetStateCallback(data);
+			ButtonHistogram = spyOnEvent('#buttonHistogram', 'click');
+		});
+		
+		it('Should be hidden on init', function(){
+			expect($('#histogram table')).toBeHidden();
+		});
+		
+		it('Should show histogram on click', function(){
+			$('#buttonHistogram').click();
+			expect(ButtonHistogram).toHaveBeenTriggered();
+			expect($('#histogram table')).toBeVisible();
+		});
+		
+		it('Should have 100% value in 3 stars', function(){
+			expect($('#histogram table tr:nth-child(3) td')).toContainText('100.00%');
+		});
+		
+		it('Should hide on click if opened', function(){
+			$('#buttonHistogram').click();
+			expect(ButtonHistogram).toHaveBeenTriggered();
+			$('#buttonHistogram').click();
+			expect(ButtonHistogram).toHaveBeenTriggered();
+			expect($('#histogram table')).toBeHidden();
+		});
 	});
 	
 });
