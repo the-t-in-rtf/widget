@@ -92,6 +92,11 @@
 				WidgetUI.deleteRate();
 				return false;
 			});
+			
+			$('#buttonHistogram').on('click', function(){
+				WidgetUI.showHideHistogram();
+				return false;
+			});
 		},
 		setWidgetState: function(){
 			var avg = $("#valoration").val();
@@ -126,6 +131,7 @@
 				$("#widget_comments_ul").prepend(li);
 				$("#widget_first_comments_ul").prepend(li.clone());
 			}
+			WidgetUI.setHistogram(data.comments);
 		},
 		addRateAndComment: function(){
 			var rate = $('input[name=widget_stars_rate]:checked').val();
@@ -157,6 +163,7 @@
 				$('#listComments').hide();
 				$("#morecomments").text("More Comments");
 			}
+			$('#buttonprovideoyourrate').show();
 			$("#valoration_select").focus();
 		},
 		provideRate: function(){
@@ -196,6 +203,32 @@
 			$('#provideoyourrateok').hide();
 			$("#morecomments").text("More Comments");
 			$("#valoration_select").focus();
+		},
+		showHideHistogram: function(){
+			if($('#histogram table').is(':hidden')){
+				$('#histogram table').show();
+			}
+			else{
+				$('#histogram table').hide();
+			}
+		},
+		setHistogram: function(data){
+			var histogram = [
+				{votes:0, percent:0},
+				{votes:0, percent:0},
+				{votes:0, percent:0},
+				{votes:0, percent:0},
+				{votes:0, percent:0}
+			];
+			for(var i = 0; i < data.length; i++){
+				histogram[data[i].value - 1].votes++;
+				histogram[data[i].value - 1].percent = histogram[data[i].value - 1].votes * 100 / data.length;
+			}
+			for(var i = 0; i < histogram.length; i++){
+				$('#histogram table tr').eq(i).find('td').html(
+					$('<span>').css({width: histogram[i].percent + '%'}).text(histogram[i].percent.toFixed(2) + '%')
+				);
+			}
 		}
 	};
 	
