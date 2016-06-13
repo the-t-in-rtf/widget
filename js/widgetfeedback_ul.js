@@ -97,6 +97,7 @@
 				WidgetUI.showHideHistogram();
 				return false;
 			});
+			
 		},
 		setWidgetState: function(){
 			var avg = $("#valoration").val();
