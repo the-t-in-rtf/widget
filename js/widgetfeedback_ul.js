@@ -98,10 +98,19 @@
 				return false;
 			});
 			
+			$('#histogram table a').on('click', function(){
+				var rate = $(this).parents('tr').index() + 1;
+				WidgetUI.setWidgetStateWithRate(rate);
+			});
+			
 		},
 		setWidgetState: function(){
 			var avg = $("#valoration").val();
 			WidgetAPI.getAverageAndComments(avg, WidgetUI.setWidgetStateCallback);
+		},
+		setWidgetStateWithRate: function(rate){
+			WidgetAPI.getAverageAndComments(rate, WidgetUI.setWidgetStateCallback);
+			$('#histogram table').hide();
 		},
 		setWidgetStateCallback: function(data){
 			$("#valuemedia").text(data.value);
