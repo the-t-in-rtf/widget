@@ -72,6 +72,10 @@
 	list-style-type:none;
 }
 
+.widget_stars .comments ul li span.date{
+	font-size:.875em;
+}
+
 .widget_stars #listComments{
 	overflow: auto;
 	height:285px;

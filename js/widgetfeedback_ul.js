@@ -118,8 +118,9 @@
 					}
 					var img = '<img src="img/user.png" alt="" height="42" width="42">';
 					var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
+					var date = '<span class="date">' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
 					var comment = '<span>' + this.c + '</span>';
-					var li = $('<li>').html(img + title + '<br/>' + comment).addClass('user-' + this.user);
+					var li = $('<li>').html(img + title + '<br/>' + date + '<br />' + comment).addClass('user-' + this.user);
 					$("#widget_comments_ul").prepend(li);
 					if(!i){
 						$("#widget_first_comments_ul").prepend(li.clone());
