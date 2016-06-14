@@ -30,12 +30,12 @@
 				}
 			});
 		},
-		getAverageAndComments: function(avg, callback){
+		getAverageAndComments: function(callback){
 			var preferences = {
 				'id':WidgetConf.id,
 				'app':WidgetConf.app,
 				'user':WidgetConf.user,
-				'grvalue':avg
+				'grvalue':'0'
 			};
 			WidgetAPI.doRequest('ControllerGetStar', preferences, callback);
 		},
@@ -61,12 +61,11 @@
 	};
 	
 	var WidgetUI = {
+		
+		activeRate : '0',
+		
 		initWidget: function(){
-			WidgetUI.setWidgetState();
-			
-			$("#valoration").on('change', function() {
-				WidgetUI.setWidgetState();
-			});
+			WidgetUI.setWidgetStateWithRate('0');
 			
 			$('#morecomments').on('click', function(){
 				WidgetUI.moreComments();
@@ -98,10 +97,17 @@
 				return false;
 			});
 			
+			$('#histogram table a').on('click', function(){
+				var rate = $(this).parents('tr').index() + 1;
+				WidgetUI.setWidgetStateWithRate(rate);
+				return false;
+			});
+			
 		},
-		setWidgetState: function(){
-			var avg = $("#valoration").val();
-			WidgetAPI.getAverageAndComments(avg, WidgetUI.setWidgetStateCallback);
+		setWidgetStateWithRate: function(rate){
+			this.activeRate = rate;
+			WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
+			$('#buttonHistogram').click();
 		},
 		setWidgetStateCallback: function(data){
 			$("#valuemedia").text(data.value);
@@ -109,24 +115,35 @@
 			$("#widget_first_comments_ul, #widget_comments_ul").empty();
 			$('#buttonDelete').hide();
 			if(data.comments.length){
+				var n = 0;
+				var first = true;
 				$.each(data.comments, function(i){
-					if(this.user == WidgetConf.user){
-						$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
-							WidgetUI.editRate();
-							return false;
-						});
-						$('#buttonDelete').show();
-					}
-					var img = '<img src="img/user.png" alt="" height="42" width="42">';
-					var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
-					var date = '<span class="date">' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
-					var comment = '<span>' + this.c + '</span>';
-					var li = $('<li>').html(img + title + '<br/>' + date + '<br />' + comment).addClass('user-' + this.user);
-					$("#widget_comments_ul").prepend(li);
-					if(!i){
-						$("#widget_first_comments_ul").prepend(li.clone());
+					if(WidgetUI.activeRate == '0' || this.value == WidgetUI.activeRate){
+						n++;
+						if(this.user == WidgetConf.user){
+							$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
+								WidgetUI.editRate();
+								return false;
+							});
+							$('#buttonDelete').show();
+						}
+						var img = '<img src="img/user.png" alt="" height="42" width="42">';
+						var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
+						var date = '<span class="date">' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
+						var comment = '<span>' + this.c + '</span>';
+						var li = $('<li>').html(img + title + '<br/>' + date + '<br />' + comment).addClass('user-' + this.user);
+						$("#widget_comments_ul").prepend(li);
+						if(first){
+							$("#widget_first_comments_ul").prepend(li.clone());
+							first = false;
+						}
 					}
 				});
+				if(n == 0){
+					var li = $('<li>').html('<strong>There are no comments whith this valoration yet</strong>');
+					$("#widget_comments_ul").prepend(li);
+					$("#widget_first_comments_ul").prepend(li.clone());
+				}
 			}
 			else{
 				var li = $('<li>').html('<strong>There are no comments whith this valoration yet</strong>');
@@ -148,7 +165,7 @@
 			}
 		},
 		addRateAndCommentCallback: function(){
-			WidgetUI.setWidgetState();
+			WidgetUI.setWidgetStateWithRate('0');
 			$("#provideoyourrate").hide();
 			$("#provideoyourrateok").show();
 			$("#provideoyourrateok").focus();
@@ -166,7 +183,7 @@
 				$("#morecomments").text("More Comments");
 			}
 			$('#buttonprovideoyourrate').show();
-			$("#valoration_select").focus();
+			//$("#valoration_select").focus();
 		},
 		provideRate: function(){
 			$('#buttonprovideoyourrate').hide();
@@ -196,7 +213,7 @@
 			WidgetAPI.deleteRateAndComment(WidgetUI.deleteRateCallback);
 		},
 		deleteRateCallback: function(){
-			WidgetUI.setWidgetState();
+			WidgetUI.setWidgetStateWithRate('0');
 		},
 		resetWidget: function(){
 			$('#buttonprovideoyourrate').show();
@@ -204,13 +221,15 @@
 			$('#provideoyourrate').hide();
 			$('#provideoyourrateok').hide();
 			$("#morecomments").text("More Comments");
-			$("#valoration_select").focus();
+			//$("#valoration_select").focus();
 		},
 		showHideHistogram: function(){
 			if($('#histogram table').is(':hidden')){
+				$('#buttonHistogram').text('Hide histogram');
 				$('#histogram table').show();
 			}
 			else{
+				$('#buttonHistogram').text('Show histogram');
 				$('#histogram table').hide();
 			}
 		},
@@ -267,5 +286,5 @@
 			return false;
 		});
 		$('#buttonDelete').hide();
-		WidgetUI.setWidgetState();
+		WidgetUI.setWidgetStateWithRate('0');
 	}

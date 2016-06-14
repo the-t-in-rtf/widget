@@ -11,7 +11,7 @@ describe('Widget', function(){
 		loadStyleFixtures('widgetfeedback_ul.css');
 		setFixtures(widget_html);
 		jasmine.Ajax.install();
-		spyOn(WidgetUI, 'setWidgetState').and.callThrough();
+		spyOn(WidgetUI, 'setWidgetStateWithRate').and.callThrough();
 		spyOn(WidgetAPI, 'getAverageAndComments').and.callThrough();
 		spyOn(WidgetAPI, 'doRequest').and.callThrough();
 		spyOn($, 'ajax').and.callFake(function(options){
@@ -27,12 +27,11 @@ describe('Widget', function(){
 	
 	describe('Initialization', function(){
 		
-		it('Should call WidgetUI.setWidgetState', function(){
-			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
+		it('Should call WidgetUI.setWidgetStateWithRate', function(){
+			expect(WidgetUI.setWidgetStateWithRate).toHaveBeenCalled();
 		});
 		
 		it('Should initialize events', function(){
-			expect($("#valoration")).toHandle('change');
 			expect($('#morecomments')).toHandle('click');
 			expect($('#buttonRate')).toHandle('click');
 			expect($('#buttonBack')).toHandle('click');
@@ -43,7 +42,7 @@ describe('Widget', function(){
 		});
 		
 		it('Should call WidgetAPI.getAverageAndComments', function(){
-			expect(WidgetAPI.getAverageAndComments).toHaveBeenCalledWith('0', WidgetUI.setWidgetStateCallback);
+			expect(WidgetAPI.getAverageAndComments).toHaveBeenCalledWith(WidgetUI.setWidgetStateCallback);
 		});
 		
 		it('Should call WidgetAPI.doRequest', function(){
@@ -69,7 +68,7 @@ describe('Widget', function(){
 		});
 		
 		it('Should show comments whit valoration of All', function(){
-			expect($('#valoration')).toHaveValue('0');
+			expect(WidgetUI.activeRate).toBe('0');
 		});
 		
 		it('Should have one comment', function(){
@@ -186,7 +185,7 @@ describe('Widget', function(){
 		});
 	});
 	
-	describe('Send comment and rate', function(){
+	describe('Sends comment and rate', function(){
 		
 		beforeEach(function(){
 			spyOn(WidgetUI, 'addRateAndComment').and.callThrough();
@@ -221,7 +220,7 @@ describe('Widget', function(){
 		
 		it('Should show Thank you text and OK button', function(){
 			$('#buttonSend').click();
-			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
+			expect(WidgetUI.setWidgetStateWithRate).toHaveBeenCalled();
 			expect($('#provideoyourrate')).toBeHidden();
 			expect($('#provideoyourrateok')).toBeVisible();
 			expect($('#provideoyourrateok')).toBeFocused();
@@ -236,7 +235,6 @@ describe('Widget', function(){
 			expect($('#firstComment')).toBeVisible();
 			expect($('#provideoyourrateok')).toBeHidden();
 			expect($('#morecomments')).toContainText('More Comments');
-			expect($('#valoration_select')).toBeFocused();
 		});
 		
 	});
@@ -262,7 +260,7 @@ describe('Widget', function(){
 		});
 		
 		it('Should refresh the widget', function(){
-			expect(WidgetUI.setWidgetState).toHaveBeenCalled();
+			expect(WidgetUI.setWidgetStateWithRate).toHaveBeenCalled();
 		});
 		
 	});
