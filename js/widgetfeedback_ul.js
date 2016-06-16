@@ -57,6 +57,13 @@
 				'user':WidgetConf.user
 			};
 			WidgetAPI.doRequest('ControllerDeleteStar', preferences, callback);
+		},
+		setCommentLike: function(IdComment, callback){
+			var preferences = {
+				'IdComment':IdComment,
+				'user':WidgetConf.user
+			};
+			WidgetAPI.doRequest('ControllerRateComment', preferences, callback);
 		}
 	};
 	
@@ -103,11 +110,20 @@
 				return false;
 			});
 			
+			//Event delegation
+			$('#widget .comments').on('click', 'a', function(){
+				var IdComment = $(this).data('IdComment');
+				WidgetUI.likeComment(IdComment);
+				return false;
+			});
+			
 		},
 		setWidgetStateWithRate: function(rate){
 			this.activeRate = rate;
 			WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
-			$('#buttonHistogram').click();
+			//$('#buttonHistogram').click();
+			$('#buttonHistogram').text('Show histogram');
+			$('#histogram table').hide();
 		},
 		setWidgetStateCallback: function(data){
 			$("#valuemedia").text(data.value);
@@ -130,11 +146,18 @@
 						var img = '<img src="img/user.png" alt="" height="42" width="42">';
 						var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
 						var date = '<span class="date">' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
-						var comment = '<span>' + this.c + '</span>';
+						var comment = '<div>' + this.c + '</div>';
 						var li = $('<li>').html(img + title + '<br/>' + date + '<br />' + comment).addClass('user-' + this.user);
+						var like = $('<a href="#">Like</a>').data({IdComment:this.id});
+						var likes = $('<span>').text('Likes: ' + this.rate);
+						if(!this.userComment){
+							li.append(like);
+						}
+						li.append(likes);
 						$("#widget_comments_ul").prepend(li);
 						if(first){
 							$("#widget_first_comments_ul").prepend(li.clone());
+							$("#widget_first_comments_ul li a").data({IdComment:this.id});
 							first = false;
 						}
 					}
@@ -183,7 +206,6 @@
 				$("#morecomments").text("More Comments");
 			}
 			$('#buttonprovideoyourrate').show();
-			//$("#valoration_select").focus();
 		},
 		provideRate: function(){
 			$('#buttonprovideoyourrate').hide();
@@ -221,7 +243,6 @@
 			$('#provideoyourrate').hide();
 			$('#provideoyourrateok').hide();
 			$("#morecomments").text("More Comments");
-			//$("#valoration_select").focus();
 		},
 		showHideHistogram: function(){
 			if($('#histogram table').is(':hidden')){
@@ -250,6 +271,12 @@
 					$('<span>').css({width: histogram[i].percent + '%'}).text(histogram[i].percent.toFixed(2) + '%')
 				);
 			}
+		},
+		likeComment: function(IdComment){
+			WidgetAPI.setCommentLike(IdComment, WidgetUI.likeCommentCallback);
+		},
+		likeCommentCallback: function(data){
+			WidgetUI.setWidgetStateWithRate('0');
 		}
 	};
 	
