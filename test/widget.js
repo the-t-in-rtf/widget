@@ -38,7 +38,7 @@ describe('Widget', function(){
 			expect($('#buttonOk')).toHandle('click');
 			expect($('#buttonSend')).toHandle('click');
 			expect($('#buttonDelete')).toHandle('click');
-			expect($('#buttonHistogram')).toHandle('click');
+			//expect($('#buttonHistogram')).toHandle('click');
 		});
 		
 		it('Should call WidgetAPI.getAverageAndComments', function(){
@@ -64,7 +64,7 @@ describe('Widget', function(){
 	describe('Initial state', function(){
 		it('Should have a rate of 3', function(){
 			expect($('#valuemedia')).toContainText('3');
-			expect($("#widget_stars_value_3")).toBeChecked();
+			//expect($("#widget_stars_value_3")).toBeChecked();
 		});
 		
 		it('Should show comments whit valoration of All', function(){
@@ -72,14 +72,13 @@ describe('Widget', function(){
 		});
 		
 		it('Should have one comment', function(){
-			expect('#widget_first_comments_ul > li').toHaveLength(1);
 			expect('#widget_comments_ul > li').toHaveLength(1);
 		});
 		
 		it('Should show first comment only', function(){
-			expect($('#firstComment')).toBeVisible();
-			expect($('#listComments')).toBeHidden();
-			expect($('#morecomments')).toContainText('More Comments');
+			expect('#widget_comments_ul > li:first-child').toBeVisible();
+			expect($('#morecomments')).toBeHidden();
+			expect($('#morecomments')).toContainText('Less Comments');
 		});
 		
 		it('Rate form should be hidden and ratting button visible', function(){
@@ -107,7 +106,6 @@ describe('Widget', function(){
 		});
 		
 		it('Should have two comments', function(){
-			expect('#widget_first_comments_ul > li').toHaveLength(1);
 			expect('#widget_comments_ul > li').toHaveLength(2);
 		});
 		
@@ -137,7 +135,6 @@ describe('Widget', function(){
 		});
 		
 		it('Should have two comments', function(){
-			expect('#widget_first_comments_ul > li').toHaveLength(1);
 			expect('#widget_comments_ul > li').toHaveLength(2);
 		});
 		
@@ -169,10 +166,10 @@ describe('Widget', function(){
 		
 		it('Should show rate form and hide write comment button, comments and show comments', function(){
 			expect($('#provideoyourrate')).toBeVisible();
-			expect($('#firstComment')).toBeHidden();
 			expect($('#listComments')).toBeHidden();
 			expect($('#buttonRate')).toBeHidden();
 			expect($('#buttonDelete')).toBeHidden();
+			expect($('#morecomments')).toBeHidden();
 		});
 		
 		it('Title and comment should be empty', function(){
@@ -232,9 +229,8 @@ describe('Widget', function(){
 			expect(ButtonOk).toHaveBeenTriggered();
 			expect(WidgetUI.resetWidget).toHaveBeenCalled();
 			expect($('#buttonprovideoyourrate')).toBeVisible();
-			expect($('#firstComment')).toBeVisible();
 			expect($('#provideoyourrateok')).toBeHidden();
-			expect($('#morecomments')).toContainText('More Comments');
+			expect($('#morecomments')).toContainText('Less Comments');
 		});
 		
 	});
@@ -276,23 +272,24 @@ describe('Widget', function(){
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
-			ButtonHistogram = spyOnEvent('#buttonHistogram', 'click');
+			//ButtonHistogram = spyOnEvent('#buttonHistogram', 'click');
 		});
 		
 		it('Should be hidden on init', function(){
-			expect($('#histogram table')).toBeHidden();
+			//expect($('#histogram table')).toBeHidden();
+			expect($('#histogram')).toHaveClass('visuallyhidden');
 		});
-		
+		/*
 		it('Should show histogram on click', function(){
 			$('#buttonHistogram').click();
 			expect(ButtonHistogram).toHaveBeenTriggered();
 			expect($('#histogram table')).toBeVisible();
 		});
-		
+		*/
 		it('Should have 100% value in 3 stars', function(){
 			expect($('#histogram table tr:nth-child(3) td')).toContainText('100.00%');
 		});
-		
+		/*
 		it('Should hide on click if opened', function(){
 			$('#buttonHistogram').click();
 			expect(ButtonHistogram).toHaveBeenTriggered();
@@ -300,6 +297,7 @@ describe('Widget', function(){
 			expect(ButtonHistogram).toHaveBeenTriggered();
 			expect($('#histogram table')).toBeHidden();
 		});
+		*/
 	});
 	
 });
