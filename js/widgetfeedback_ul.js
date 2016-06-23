@@ -149,27 +149,15 @@
 						if(this.user == WidgetConf.user){
 							WidgetUI.setAddEditComment(true);
 						}
-						var img = '<img src="img/user.png" alt="" height="28" width="28">';
-						var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
-						var date = '<span class="date">&#128197 ' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
-						var comment = '<div>' + this.c + '</div>';
-						var html = img + title + '<br/>' + date + '<br />' + comment;
-						var li = $('<li>').html(html).addClass('user-' + this.user).attr({tabIndex:0});
-						if(!this.userComment){
-							var like = $('<a href="#"><span class="like">&#10084;</span></a>').data({IdComment:this.id});
-						}
-						else{
-							var like = $('<span class="like">&#10084;</span>').data({IdComment:this.id});
-						}
-						li.append(like);
-						var likes = $('<span>').text(this.rate);
-						li.append(likes);
-						$("#widget_comments_ul").append(li);
+						WidgetUI.addComment(this);
 					}
 				});
 				
 				if(n == 0){
 					WidgetUI.setNoComments();
+				}
+				if(n == 1){
+					$("#morecomments").hide();
 				}
 			}
 			else{
@@ -298,6 +286,24 @@
 			var li = $('<li>').html('<strong>There are no comments with this rate yet</strong>');
 			$("#widget_comments_ul").append(li);
 			$("#morecomments").hide();
+		},
+		addComment: function(comment){
+			var img = '<img src="img/user.png" alt="" height="28" width="28">';
+			var title = '<strong><span>' + comment.title + '</span> (' + comment.value + '/5)</strong>';
+			var date = '<span class="date">&#128197 ' + new Date(comment.date).toLocaleDateString('en-UK') + '</span>';
+			var comment = '<div>' + comment.c + '</div>';
+			var html = img + title + '<br/>' + date + '<br />' + comment;
+			var li = $('<li>').html(html).addClass('user-' + comment.user).attr({tabIndex:0});
+			if(!comment.userComment){
+				var like = $('<a href="#"><span class="like">&#10084;</span></a>').data({IdComment:comment.id});
+			}
+			else{
+				var like = $('<span class="like">&#10084;</span>').data({IdComment:comment.id});
+			}
+			li.append(like);
+			var likes = $('<span>').text(comment.rate);
+			li.append(likes);
+			$("#widget_comments_ul").append(li);
 		}
 	};
 	

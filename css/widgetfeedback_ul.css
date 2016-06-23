@@ -11,6 +11,32 @@
 	background-color: #fff;
 	border: 1px solid #b7bdb9;
 }
+/* New interface */
+#widget_stars_rate_part.widget_stars{
+	margin: 0px;
+	padding: 0px;
+	width:auto;
+	position:static;
+	background-color: #fff;
+	border:none;
+}
+
+#widget_stars_comments_part.widget_stars{
+	margin: 0px;
+	padding: 0px;
+	width:auto;
+	position:static;
+	background-color: #fff;
+	border: 1px solid #b7bdb9;
+}
+#widget_stars_rate_part.widget_stars .separator{
+	display:none;
+}
+
+#widget_stars_rate_part.widget_stars #histogram{
+	width:96%;
+}
+/* New interface */
 
 .widget_stars h1{
 	text-align: center;
