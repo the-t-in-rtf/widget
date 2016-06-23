@@ -57,12 +57,21 @@
 				'user':WidgetConf.user
 			};
 			WidgetAPI.doRequest('ControllerDeleteStar', preferences, callback);
+		},
+		setCommentLike: function(IdComment, callback){
+			var preferences = {
+				'IdComment':IdComment,
+				'user':WidgetConf.user
+			};
+			WidgetAPI.doRequest('ControllerRateComment', preferences, callback);
 		}
 	};
 	
 	var WidgetUI = {
 		
+		init:true,
 		activeRate : '0',
+		timer:null,
 		
 		initWidget: function(){
 			WidgetUI.setWidgetStateWithRate('0');
@@ -91,10 +100,17 @@
 				WidgetUI.deleteRate();
 				return false;
 			});
+
+			$('#rate, #histogram').on('mouseover', function(){
+				WidgetUI.showHistogram();
+			}).on('mouseout', function(){
+				WidgetUI.hideHistogram();
+			});
 			
-			$('#buttonHistogram').on('click', function(){
-				WidgetUI.showHideHistogram();
-				return false;
+			$('#rate, #histogram a').on('focus', function(){
+				WidgetUI.showHistogram();
+			}).on('blur', function(){
+				WidgetUI.hideHistogram();
 			});
 			
 			$('#histogram table a').on('click', function(){
@@ -103,52 +119,65 @@
 				return false;
 			});
 			
+			//Event delegation
+			$('#widget .comments').on('click', 'a', function(){
+				var IdComment = $(this).data('IdComment');
+				WidgetUI.likeComment(IdComment);
+				return false;
+			});
+			
 		},
 		setWidgetStateWithRate: function(rate){
 			this.activeRate = rate;
 			WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
-			$('#buttonHistogram').click();
 		},
 		setWidgetStateCallback: function(data){
 			$("#valuemedia").text(data.value);
-			$("[name=widget_stars_value]").val([data.value]);
-			$("#widget_first_comments_ul, #widget_comments_ul").empty();
-			$('#buttonDelete').hide();
+			var stars_rate = '';
+			for(var i = 1; i <= 5; i++){
+				stars_rate += (i <= data.value) ? '&#9733;' : '&#9734;';
+			}
+			$("#valuemedia_stars").html(stars_rate);
+			$("#widget_comments_ul").empty();
+			WidgetUI.setAddEditComment(false);
+			$("#morecomments").show();
 			if(data.comments.length){
 				var n = 0;
-				var first = true;
 				$.each(data.comments, function(i){
 					if(WidgetUI.activeRate == '0' || this.value == WidgetUI.activeRate){
 						n++;
 						if(this.user == WidgetConf.user){
-							$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
-								WidgetUI.editRate();
-								return false;
-							});
-							$('#buttonDelete').show();
+							WidgetUI.setAddEditComment(true);
 						}
-						var img = '<img src="img/user.png" alt="" height="42" width="42">';
+						var img = '<img src="img/user.png" alt="" height="28" width="28">';
 						var title = '<strong><span>' + this.title + '</span> (' + this.value + '/5)</strong>';
-						var date = '<span class="date">' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
-						var comment = '<span>' + this.c + '</span>';
-						var li = $('<li>').html(img + title + '<br/>' + date + '<br />' + comment).addClass('user-' + this.user);
-						$("#widget_comments_ul").prepend(li);
-						if(first){
-							$("#widget_first_comments_ul").prepend(li.clone());
-							first = false;
+						var date = '<span class="date">&#128197 ' + new Date(this.date).toLocaleDateString('en-UK') + '</span>';
+						var comment = '<div>' + this.c + '</div>';
+						var html = img + title + '<br/>' + date + '<br />' + comment;
+						var li = $('<li>').html(html).addClass('user-' + this.user).attr({tabIndex:0});
+						if(!this.userComment){
+							var like = $('<a href="#"><span class="like">&#10084;</span></a>').data({IdComment:this.id});
 						}
+						else{
+							var like = $('<span class="like">&#10084;</span>').data({IdComment:this.id});
+						}
+						li.append(like);
+						var likes = $('<span>').text(this.rate);
+						li.append(likes);
+						$("#widget_comments_ul").append(li);
 					}
 				});
+				
 				if(n == 0){
-					var li = $('<li>').html('<strong>There are no comments whith this valoration yet</strong>');
-					$("#widget_comments_ul").prepend(li);
-					$("#widget_first_comments_ul").prepend(li.clone());
+					WidgetUI.setNoComments();
 				}
 			}
 			else{
-				var li = $('<li>').html('<strong>There are no comments whith this valoration yet</strong>');
-				$("#widget_comments_ul").prepend(li);
-				$("#widget_first_comments_ul").prepend(li.clone());
+				WidgetUI.setNoComments();
+			}
+			if(WidgetUI.init){
+				WidgetUI.init = false;
+				WidgetUI.moreComments();
 			}
 			WidgetUI.setHistogram(data.comments);
 		},
@@ -171,41 +200,33 @@
 			$("#provideoyourrateok").focus();
 		},
 		moreComments: function(){
-			if($('#listComments').is(':hidden')){
-				$('#firstComment').hide();
-				$('#listComments').show();
-				$("#morecomments").text("First Comment");
-				$('#provideoyourrate').hide();
+			if($('#listComments li').eq(1).is(':hidden')){
+				$("#morecomments").text("Less Comments").removeClass('more').addClass('less');
+				$('#listComments li').show();
 			}
 			else{
-				$('#firstComment').show();
-				$('#listComments').hide();
-				$("#morecomments").text("More Comments");
+				$("#morecomments").text("More Comments").removeClass('less').addClass('more');
+				$('#listComments li:not(:first-child)').hide();
 			}
 			$('#buttonprovideoyourrate').show();
-			//$("#valoration_select").focus();
 		},
 		provideRate: function(){
 			$('#buttonprovideoyourrate').hide();
-			$('#firstComment').hide();
 			$('#provideoyourrate').show();
-			$("#morecomments").text("More Comments");
 			$('#listComments').hide();
-			$('#firstComment').hide();
+			$('#morecomments').hide();
 			$("#widget_title_comment").val('');
 			$("#widget_comment").val('');
 			$("#widget_stars_rate_1").focus();
 		},
 		editRate: function(){
 			$('#buttonprovideoyourrate').hide();
-			$('#firstComment').hide();
 			$('#provideoyourrate').show();
-			$("#morecomments").text("More Comments");
 			$('#listComments').hide();
-			$('#firstComment').hide();
+			$('#morecomments').hide();
 			var title = $('#listComments li.user-' + WidgetConf.user + ' strong span').text();
 			$("#widget_title_comment").val(title);
-			var comment = $('#listComments li.user-' + WidgetConf.user + ' > span').text();
+			var comment = $('#listComments li.user-' + WidgetConf.user + ' > div').text();
 			$("#widget_comment").val(comment);
 			$("#widget_stars_rate_1").focus();
 		},
@@ -217,21 +238,21 @@
 		},
 		resetWidget: function(){
 			$('#buttonprovideoyourrate').show();
-			$('#firstComment').show();
+			$('#listComments').show();
 			$('#provideoyourrate').hide();
 			$('#provideoyourrateok').hide();
-			$("#morecomments").text("More Comments");
-			//$("#valoration_select").focus();
+			if($('#listComments li').length > 1){
+				$('#morecomments').show();
+			}
 		},
-		showHideHistogram: function(){
-			if($('#histogram table').is(':hidden')){
-				$('#buttonHistogram').text('Hide histogram');
-				$('#histogram table').show();
-			}
-			else{
-				$('#buttonHistogram').text('Show histogram');
-				$('#histogram table').hide();
-			}
+		showHistogram: function(){
+			clearTimeout(WidgetUI.timer);
+			$('#histogram').removeClass('visuallyhidden');
+		},
+		hideHistogram: function(){
+			WidgetUI.timer = setTimeout(function(){
+				$('#histogram').addClass('visuallyhidden');
+			}, 500);
 		},
 		setHistogram: function(data){
 			var histogram = [
@@ -250,6 +271,33 @@
 					$('<span>').css({width: histogram[i].percent + '%'}).text(histogram[i].percent.toFixed(2) + '%')
 				);
 			}
+		},
+		likeComment: function(IdComment){
+			WidgetAPI.setCommentLike(IdComment, WidgetUI.likeCommentCallback);
+		},
+		likeCommentCallback: function(data){
+			WidgetUI.setWidgetStateWithRate('0');
+		},
+		setAddEditComment: function(edit){
+			if(edit){
+				$('#buttonRate').off('click').text('Edit your comment and rate').on('click', function(){
+					WidgetUI.editRate();
+					return false;
+				});
+				$('#buttonDelete').show();
+			}
+			else{
+				$('#buttonRate').off('click').text('Write a comment and rate it').on('click', function(){
+					WidgetUI.provideRate();
+					return false;
+				});
+				$('#buttonDelete').hide();
+			}
+		},
+		setNoComments: function(){
+			var li = $('<li>').html('<strong>There are no comments with this rate yet</strong>');
+			$("#widget_comments_ul").append(li);
+			$("#morecomments").hide();
 		}
 	};
 	
@@ -281,10 +329,5 @@
 		}
 		$('#user-menu').toggle();
 		WidgetUI.resetWidget();
-		$('#buttonRate').off('click').text('Write a comment and rate it').on('click', function(){
-			WidgetUI.provideRate();
-			return false;
-		});
-		$('#buttonDelete').hide();
 		WidgetUI.setWidgetStateWithRate('0');
 	}
