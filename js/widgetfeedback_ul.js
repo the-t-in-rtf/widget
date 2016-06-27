@@ -119,6 +119,9 @@
 				return false;
 			});
 			
+			/* New interface  ¿Integration? */
+			$('#widget_stars_rate_part #rate, #widget_stars_comments_part #histogram').off('mouseover').off('mouseout').find('a').off('focus').off('blur');
+			
 			//Event delegation
 			$('#widget .comments').on('click', 'a', function(){
 				var IdComment = $(this).data('IdComment');
