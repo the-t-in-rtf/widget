@@ -7,7 +7,8 @@
 		/*url:  'http://193.27.9.220/widget/',*/
 		app:  'ul',
 		user: '4',
-		id:   $(location).attr('pathname')
+		id:   $(location).attr('pathname'),
+		isVendor: true
 	};
 	
 	var WidgetAPI = {
@@ -64,6 +65,14 @@
 				'user':WidgetConf.user
 			};
 			WidgetAPI.doRequest('ControllerRateComment', preferences, callback);
+		},
+		setReplyToComment: function(IdComment, comment, callback){
+			var preferences = {
+				'IdComment':IdComment,
+				'user':WidgetConf.user,
+				'comment': comment
+			};
+			WidgetAPI.doRequest('ControllerReplyComment', preferences, callback);
 		}
 	};
 	
@@ -120,12 +129,25 @@
 			});
 			
 			/* New interface  ¿Integration? */
-			$('#widget_stars_rate_part #rate, #widget_stars_comments_part #histogram').off('mouseover').off('mouseout').find('a').off('focus').off('blur');
+			$('#widget_stars_rate_part #rate, #widget_stars_comments_part #histogram').off('mouseover mouseout focus blur').find('a').off('focus blur');
 			
 			//Event delegation
-			$('#widget .comments').on('click', 'a', function(){
+			$('#listComments').on('click', 'a.like_button', function(){
 				var IdComment = $(this).data('IdComment');
 				WidgetUI.likeComment(IdComment);
+				return false;
+			});
+			$('#listComments').on('click', 'a.reply_button', function(){
+				var IdComment = $(this).data('IdComment');
+				WidgetUI.replyComment(IdComment);
+				return false;
+			});
+			$('#listComments').on('click', '.cancel', function(){
+				WidgetUI.removeReplyForm();
+				return false;
+			});
+			$('#listComments').on('click', '.send', function(){
+				WidgetUI.addReplyToComment();
 				return false;
 			});
 			
@@ -294,19 +316,53 @@
 			var img = '<img src="img/user.png" alt="" height="28" width="28">';
 			var title = '<strong><span>' + comment.title + '</span> (' + comment.value + '/5)</strong>';
 			var date = '<span class="date">&#128197 ' + new Date(comment.date).toLocaleDateString('en-UK') + '</span>';
-			var comment = '<div>' + comment.c + '</div>';
-			var html = img + title + '<br/>' + date + '<br />' + comment;
-			var li = $('<li>').html(html).addClass('user-' + comment.user).attr({tabIndex:0});
+			var body = '<div>' + comment.c + '</div>';
+			var html = img + title + '<br/>' + date + '<br />' + body;
+			var li = $('<li>').html(html).addClass('user-' + comment.user).addClass('comment-' + comment.id).attr({tabIndex:0});
 			if(!comment.userComment){
-				var like = $('<a href="#"><span class="like">&#10084;</span></a>').data({IdComment:comment.id});
+				var like = $('<a href="#" class="like_button"><span class="like">&#10084;</span></a>').data({IdComment:comment.id});
 			}
 			else{
 				var like = $('<span class="like">&#10084;</span>').data({IdComment:comment.id});
 			}
+
 			li.append(like);
 			var likes = $('<span>').text(comment.rate);
 			li.append(likes);
+			//Vendor reply
+			if(WidgetConf.isVendor){
+				var reply = $('<a>').attr({href:'#'}).text('Reply comment').addClass('reply_button').data({IdComment:comment.id});
+				li.append(reply);
+			}
 			$("#widget_comments_ul").append(li);
+		},
+		replyComment: function(IdComment){
+			WidgetUI.addReplyForm(IdComment);
+		},
+		addReplyForm: function(IdComment){
+			WidgetUI.removeReplyForm();
+			var form = $('<form>');
+			var textarea = $('<textarea>');
+			var comment = $('<input>').attr({type:'hidden'}).val(IdComment);
+			var send = $('<button>').text('Send').addClass('send blue_button');
+			var back = $('<button>').text('Cancel').addClass('cancel red_button');
+			form.append(comment);
+			form.append(textarea);
+			form.append(back);
+			form.append(send);
+			$('#listComments li.comment-' + IdComment).append(form);
+		},
+		removeReplyForm: function(){
+			$('#listComments li form').remove();
+		},
+		addReplyToComment: function(){
+			var IdComment = $('#listComments li form input[type=hidden]').val();
+			var comment = $('#listComments li form textarea').val();
+			WidgetAPI.setReplyToComment(IdComment, comment, WidgetUI.addReplyToCommentCallback);
+		},
+		addReplyToCommentCallback: function(){
+			WidgetUI.removeReplyForm();//¿needed?
+			WidgetUI.setWidgetStateWithRate('0');
 		}
 	};
 	
