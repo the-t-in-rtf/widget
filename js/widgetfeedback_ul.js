@@ -213,13 +213,13 @@
 			$("#provideoyourrateok").focus();
 		},
 		moreComments: function(){
-			if($('#listComments li').eq(1).is(':hidden')){
+			if($('#listComments > ul > li').eq(1).is(':hidden')){
 				$("#morecomments").text("Less Comments").removeClass('more').addClass('less');
-				$('#listComments li').show();
+				$('#listComments > ul > li').show();
 			}
 			else{
 				$("#morecomments").text("More Comments").removeClass('less').addClass('more');
-				$('#listComments li:not(:first-child)').hide();
+				$('#listComments > ul > li:not(:first-child)').hide();
 			}
 			$('#buttonprovideoyourrate').show();
 		},
@@ -334,6 +334,19 @@
 				var reply = $('<a>').attr({href:'#'}).text('Reply comment').addClass('reply_button').data({IdComment:comment.id});
 				li.append(reply);
 			}
+			//Replies
+			if(comment.replies.length > 0){
+				var ul_replies = $('<ul>');
+				$.each(comment.replies, function(){
+					var li_reply = $('<li>');
+					var reply_date = $('<span>').text(new Date(this.date).toLocaleDateString('en-UK')).addClass('date');
+					var reply_text = $('<p>').text(this.reply);
+					li_reply.append(reply_date);
+					li_reply.append(reply_text);
+					ul_replies.append(li_reply);
+				});
+				li.append(ul_replies);
+			}
 			$("#widget_comments_ul").append(li);
 		},
 		replyComment: function(IdComment){
@@ -350,7 +363,7 @@
 			form.append(textarea);
 			form.append(back);
 			form.append(send);
-			$('#listComments li.comment-' + IdComment).append(form);
+			$('#listComments li.comment-' + IdComment + ' .reply_button').after(form);
 		},
 		removeReplyForm: function(){
 			$('#listComments li form').remove();
@@ -361,7 +374,7 @@
 			WidgetAPI.setReplyToComment(IdComment, comment, WidgetUI.addReplyToCommentCallback);
 		},
 		addReplyToCommentCallback: function(){
-			WidgetUI.removeReplyForm();//¿needed?
+			//WidgetUI.removeReplyForm();//¿needed?
 			WidgetUI.setWidgetStateWithRate('0');
 		}
 	};
