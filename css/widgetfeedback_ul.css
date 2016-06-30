@@ -36,6 +36,19 @@
 #widget_stars_rate_part.widget_stars #histogram{
 	width:96%;
 }
+
+#widget_stars_comments_part.widget_stars #histogram{
+	position:static;
+}
+
+
+#widget_stars_comments_part.widget_stars #histogram table{
+	/*position:absolute;*/
+	box-shadow:none;
+	width:100%;
+	border:none;
+	border-bottom: 1px solid #b7bdb9;
+}
 /* New interface */
 
 .widget_stars h1{
@@ -113,19 +126,19 @@
 	padding:0px;
 }
 
-.widget_stars .comments ul li{
+.widget_stars .comments > ul  > li{
 	border-top:1px dashed #ccc;
 	padding:5px;
 	transition:background-color 2s;
 }
 
-.widget_stars .comments ul li:hover,
-.widget_stars .comments ul li:focus{
+.widget_stars .comments > ul > li:hover,
+.widget_stars .comments > ul > li:focus{
 	background-color:#f2f2f2;
 	border-radius:2px;
 }
 
-.widget_stars .comments ul li:first-child{
+.widget_stars .comments > ul > li:first-child{
 	border-top:none;
 }
 
@@ -146,6 +159,12 @@
 .widget_stars .comments ul li a:hover span.like,
 .widget_stars .comments ul li a:focus span.like{
 	text-shadow:1px 1px #666;
+}
+
+.widget_stars .comments ul li ul{
+	margin-left:5em;
+	border-left:1px solid #b7bdb9;
+	padding-left:1em;
 }
 
 .widget_stars #morecomments{
