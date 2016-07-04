@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/the-t-in-rtf/widget#readme",
   "dependencies": {
-    "infusion": "2.0.0-dev.20160519T222603Z.754d2c6",
+    "infusion": "2.0.0-dev.20160519T222603Z.754d2c6"
   },
   "devDependencies": {
     "foundation-sites": "5.5.2",

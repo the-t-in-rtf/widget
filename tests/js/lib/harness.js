@@ -32,7 +32,6 @@ fluid.defaults("gpii.test.userReviewWidget.harness", {
                         options: {
                             content: "%gpii-user-review-widget/node_modules"
                         }
-                    },
                     }
                 }
             }
