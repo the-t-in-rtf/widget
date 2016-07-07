@@ -21,11 +21,11 @@
 
 
 <!-- Bring in Handlebars dependency -->
-<script type="text/javascript" src="/bc/handlebars/handlebars.js"></script>
+<script type="text/javascript" src="/nm/handlebars/dist/handlebars.js"></script>
 
 <!-- Bring in Pagedown dependency -->
-<script type="text/javascript" src="/bc/pagedown/Markdown.Converter.js"></script>
-<script type="text/javascript" src="/bc/pagedown/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="/nm/pagedown/Markdown.Converter.js"></script>
+<script type="text/javascript" src="/nm/pagedown/Markdown.Sanitizer.js"></script>
 
 <script type="text/javascript" src="/nm/gpii-binder/src/js/binder.js"></script>
 
@@ -45,7 +45,7 @@
 <script type="text/javascript" src="/nm/gpii-handlebars/src/js/client/templateRequestAndRender.js"></script>
 
 <!-- moment.js is required for our date handling -->
-<script src="/bc/moment/moment.js"></script>
+<script src="/nm/moment/moment.js"></script>
 
 <!-- Bring in common grades used to build multiple components in the Unified Listing -->
 <script src="/src/js/client/hasSkipNavLink.js"></script>
@@ -77,17 +77,18 @@
 
 
 <!-- include foundation and its dependencies -->
-<!-- include foundation and its dependencies -->
-<script src="/bc/foundation/js/vendor/modernizr.js"></script>
-<script src="/bc/foundation/js/foundation/foundation.js"></script>
-<script src="/bc/foundation/js/foundation/foundation.alert.js"></script>
-<script src="/bc/foundation/js/foundation/foundation.topbar.js"></script>
-<script src="/bc/foundation/js/foundation/foundation.dropdown.js"></script>
-<script src="/bc/foundation/js/foundation/foundation.accordion.js"></script>
+<script src="/nm/foundation-sites/js/vendor/modernizr.js"></script>
+<script src="/nm/foundation-sites/js/foundation/foundation.js"></script>
+<script src="/nm/foundation-sites/js/foundation/foundation.alert.js"></script>
+<script src="/nm/foundation-sites/js/foundation/foundation.topbar.js"></script>
+<script src="/nm/foundation-sites/js/foundation/foundation.dropdown.js"></script>
 
-<link rel="stylesheet" href="/bc/foundation/css/normalize.css">
-<link rel="stylesheet" href="/bc/foundation/css/foundation.css">
-<link rel="stylesheet" href="/bc/foundation-icons-sets/foundation_icons_general/stylesheets/general_foundicons.css">
+<!-- Bring in the query string encoding we use in our client-side components -->
+<script src="/nm/gpii-express/src/js/lib/querystring-coding.js"></script>
+
+<link rel="stylesheet" href="/nm/foundation-sites/css/normalize.css">
+<link rel="stylesheet" href="/nm/foundation-sites/css/foundation.css">
 
 <!-- include our styles -->
 <link rel="stylesheet" href="/src/css/ul.css"/>
+<link rel="stylesheet" href="/src/css/ul-icons.css"/>
