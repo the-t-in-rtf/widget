@@ -153,6 +153,10 @@
                 return false;
             });
             
+            $('.widgetStrings').text(function(index, oldText){
+                return WidgetConf.strings(oldText);
+            });
+            
         },
         setWidgetStateWithRate: function(rate){
             this.activeRate = rate;
