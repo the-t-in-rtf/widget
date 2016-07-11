@@ -175,7 +175,8 @@
 			WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
 		},
 		setWidgetStateCallback: function(data){
-			$("#valuemedia").text(data.value);
+			var rating_text = '(' + data.value + '/5 - ' + data.comments.length + ')';
+			$("#valuemedia").text(rating_text);
 			var stars_rate = '';
 			for(var i = 1; i <= 5; i++){
 				stars_rate += (i <= data.value) ? '&#9733;' : '&#9734;';
