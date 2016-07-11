@@ -98,8 +98,8 @@ describe('Widget', function(){
 			var data = {
 				value:3, 
 				comments: [
-					{title: '', comment: '', user: '4', value: 3},
-					{title: '', comment: '', user: '1', value: 3}
+					{title: '', comment: '', user: '4', value: 3, userComment:true, replies:[]},
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]}
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
@@ -127,8 +127,8 @@ describe('Widget', function(){
 			var data = {
 				value:3, 
 				comments: [
-					{title: '', comment: '', user: '1', value: 3},
-					{title: '', comment: '', user: '1', value: 3}
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]},
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]}
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
@@ -267,8 +267,8 @@ describe('Widget', function(){
 			var data = {
 				value:3, 
 				comments: [
-					{title: '', comment: '', user: '1', value: 3},
-					{title: '', comment: '', user: '1', value: 3}
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]},
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]}
 				]
 			};
 			WidgetUI.setWidgetStateCallback(data);
@@ -298,6 +298,63 @@ describe('Widget', function(){
 			expect($('#histogram table')).toBeHidden();
 		});
 		*/
+	});
+	
+	describe('Reply comment', function(){
+		
+		beforeEach(function(){
+			var data = {
+				value:3, 
+				comments: [
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]},
+					{title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]}
+				]
+			};
+			WidgetConf.isVendor = true;
+			WidgetUI.setWidgetStateCallback(data);
+			ButtonReply = spyOnEvent('#widget_comments_ul > li .reply_button', 'click');
+		});
+		
+		it('Should have a reply button', function(){
+			expect($('#widget_comments_ul > li .reply_button')).toContainText('Reply comment');
+		});
+		
+		it('Should show reply form on click', function(){
+			$('#widget_comments_ul > li:first-child .reply_button').click();
+			expect(ButtonReply).toHaveBeenTriggered();
+			expect($('#widget_comments_ul > li:first-child form .cancel')).toContainText('Cancel');
+			expect($('#widget_comments_ul > li:first-child form .send')).toContainText('Send');
+		});
+	});
+	
+	describe('Like', function(){
+		
+		beforeEach(function(){
+			var data = {
+				value:3, 
+				comments: [
+					{id: '1', title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]},
+					{id: '2', title: '', comment: '', user: '1', value: 3, userComment:false, replies:[]}
+				]
+			};
+			WidgetUI.setWidgetStateCallback(data);
+			spyOn(WidgetUI, 'likeComment').and.callThrough();
+			spyOn(WidgetAPI, 'setCommentLike').and.callThrough();
+			spyOn(WidgetUI, 'likeCommentCallback').and.callThrough();
+			ButtonLike = spyOnEvent('#widget_comments_ul > li .like', 'click');
+		});
+		
+		it('Should have a like button', function(){
+			expect($('#widget_comments_ul > li .like')).toBeVisible();
+		});
+		
+		it('Should like comment on click', function(){
+			$('#widget_comments_ul > li:first-child .like').click();
+			expect(ButtonLike).toHaveBeenTriggered();
+			expect(WidgetUI.likeComment).toHaveBeenCalled();
+			expect(WidgetAPI.setCommentLike).toHaveBeenCalledWith('1', WidgetUI.likeCommentCallback);
+			expect(WidgetUI.likeCommentCallback).toHaveBeenCalled();
+		});
 	});
 	
 });
