@@ -15,9 +15,9 @@ var widgetStrings = (function () {
       "LABEL STAR RATING" : "Your overall rating of this product",
       "LABEL REVIEW TITLE" : "Title of your review",
       "LABEL REVIEW BODY" : "Write your review here",
-      "MESSAGE REVIEW OK" : "Thank you!"
-      
-     
+      "MESSAGE REVIEW OK" : "Thank you!",
+      "EDIT REPLY"        : "Edit reply",
+      "DELETE REPLY"      : "Delete reply"
   };
   // var _locale = "en-UK";
   var _locale = "pt-PT";

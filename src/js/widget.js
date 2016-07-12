@@ -29,7 +29,7 @@
                     callback(data);
                 },
                 error: function(xhr, msg){
-                    console.log(msg);
+                    console.log(msg + ', ' + xhr.status + ': ' + xhr.statusText);
                 }
             });
         },
@@ -68,13 +68,20 @@
             };
             WidgetAPI.doRequest('ControllerRateComment', preferences, callback);
         },
-        setReplyToComment: function(IdComment, comment, callback){
+        setReplyToComment: function(IdReply, IdComment, comment, callback){
             var preferences = {
+                'IdReply':IdReply,
                 'IdComment':IdComment,
                 'user':WidgetConf.user,
                 'comment': comment
             };
             WidgetAPI.doRequest('ControllerReplyComment', preferences, callback);
+        },
+        deleteReply: function(IdReply, callback){
+            var preferences = {
+                'IdReply':IdReply
+            };
+            WidgetAPI.doRequest('ControllerDeleteReply', preferences, callback);
         }
     };
     
@@ -152,18 +159,29 @@
                 WidgetUI.addReplyToComment();
                 return false;
             });
+            $('#listComments').on('click', '.edit_reply', function(){
+                var IdReply = $(this).data('IdReply');
+                var IdComment = $(this).data('IdComment');
+                WidgetUI.editReply(IdReply, IdComment);
+                return false;
+            });
             
+            $('#listComments').on('click', '.delete_reply', function(){
+                var IdReply = $(this).data('IdReply');
+                WidgetUI.deleteReply(IdReply);
+                return false;
+            });
             $('.widgetStrings').text(function(index, oldText){
                 return WidgetConf.strings(oldText);
             });
-            
         },
         setWidgetStateWithRate: function(rate){
             this.activeRate = rate;
             WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
         },
         setWidgetStateCallback: function(data){
-            $("#valuemedia").text(data.value);
+            var rating_text = '(' + data.value + '/5 - ' + data.comments.length + ')';
+            $("#valuemedia").text(rating_text);
             var stars_rate = '';
             for(var i = 1; i <= 5; i++){
                 stars_rate += (i <= data.value) ? '&#9733;' : '&#9734;';
@@ -344,12 +362,20 @@
             if(comment.replies.length > 0){
                 var ul_replies = $('<ul>');
                 $.each(comment.replies, function(){
-                    var li_reply = $('<li>');
+                    var li_reply = $('<li>').addClass('reply-' + this.id);
                     var reply_date = $('<span>').text(new Date(this.date).toLocaleDateString(WidgetConf.currentLocale())).addClass('date');
                     var reply_text = $('<p>').text(this.reply);
-
                     li_reply.append(reply_date);
                     li_reply.append(reply_text);
+                    if(WidgetConf.isVendor && this.user == WidgetConf.user){
+                        var reply_edit   = $('<a>').attr({href:'#'}).text(WidgetConf.strings('EDIT REPLY')).addClass('edit_reply').data({IdReply: this.id, IdComment: comment.id});
+                        var reply_delete = $('<a>').attr({href:'#'}).text(WidgetConf.strings('DELETE REPLY')).addClass('delete_reply').data({IdReply: this.id, IdComment: comment.id});
+                        li_reply.append(reply_edit);
+                        li_reply.append(reply_delete);
+                        //Remove Reply comment link
+                        //Hide for backward compatibility
+                        li.find('.reply_button').hide();
+                    }
                     ul_replies.append(li_reply);
                 });
                 li.append(ul_replies);
@@ -357,15 +383,21 @@
             $("#widget_comments_ul").append(li);
         },
         replyComment: function(IdComment){
-            WidgetUI.addReplyForm(IdComment);
+            WidgetUI.addReplyForm(IdComment, 0);
         },
-        addReplyForm: function(IdComment){
+        addReplyForm: function(IdComment, IdReply){
             WidgetUI.removeReplyForm();
             var form = $('<form>');
             var textarea = $('<textarea>');
-            var comment = $('<input>').attr({type:'hidden'}).val(IdComment);
-            var send = $('<button>').text(WidgetConf.strings("SEND")).addClass('send blue_button');
-            var back = $('<button>').text(WidgetConf.strings("CANCEL")).addClass('cancel red_button');
+            if(IdReply != 0){
+                var reply_text = $('#listComments li.comment-' + IdComment + ' li.reply-' + IdReply + ' p').text();
+                textarea.text(reply_text);
+            }
+            var reply = $('<input>').attr({type:'hidden', name:'IdReply'}).val(IdReply);
+            var comment = $('<input>').attr({type:'hidden', name:'IdComment'}).val(IdComment);
+            var send = $('<button>').text('Send').addClass('send blue_button');
+            var back = $('<button>').text('Cancel').addClass('cancel red_button');
+            form.append(reply);
             form.append(comment);
             form.append(textarea);
             form.append(back);
@@ -376,13 +408,26 @@
             $('#listComments li form').remove();
         },
         addReplyToComment: function(){
-            var IdComment = $('#listComments li form input[type=hidden]').val();
+            var IdReply = $('#listComments li form input[name=IdReply]').val();
+            var IdComment = $('#listComments li form input[name=IdComment]').val();
             var comment = $('#listComments li form textarea').val();
-            WidgetAPI.setReplyToComment(IdComment, comment, WidgetUI.addReplyToCommentCallback);
+            WidgetAPI.setReplyToComment(IdReply, IdComment, comment, WidgetUI.addReplyToCommentCallback);
         },
         addReplyToCommentCallback: function(){
             //WidgetUI.removeReplyForm();//¿needed?
             WidgetUI.setWidgetStateWithRate('0');
+        },
+        deleteReply: function(IdReply){
+            WidgetAPI.deleteReply(IdReply, WidgetUI.deleteReplyCallback);
+        },
+        deleteReplyCallback: function(){
+            WidgetUI.setWidgetStateWithRate('0');
+        },
+        editReply: function(IdReply, IdComment){
+            WidgetUI.addReplyForm(IdComment, IdReply);
+        },
+        editReplyCallback: function(){
+            alert('editReplyCallback');
         }
     };
     
