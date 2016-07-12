@@ -16,10 +16,8 @@ var widgetStrings = (function () {
       "LABEL REVIEW TITLE" : "Title of your review",
       "LABEL REVIEW BODY" : "Write your review here",
       "MESSAGE REVIEW OK" : "Thank you!",
-	  "EDIT REPLY"        : "Edit reply",
-	  "DELETE REPLY"      : "Delete reply"
-      
-     
+      "EDIT REPLY"        : "Edit reply",
+      "DELETE REPLY"      : "Delete reply"
   };
   // var _locale = "en-UK";
   var _locale = "pt-PT";
