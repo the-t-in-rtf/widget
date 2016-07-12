@@ -1,0 +1,114 @@
+<!--START Widget-->
+<section id="widget" tabindex="0" class="scroll-container">
+    <div class="widget_stars" id="widget_stars">
+        <div id="loading"></div>
+        <div class="titlewidget"><h1 class="titlewidget">Jaws is rated (<span id="valuemedia">3,5</span>/5)</h1></div>
+        <div id="widget_content" class="widget_content">
+            <p class="widget_categorization" align="center">
+                <input id="radio_stars1" type="radio" name="widget_stars_value" value="5">
+                <label for="radio_stars1" class="widget_label widget_mouse_pointer"><span class="visuallyhidden">5 Stars</span>&#9734;</label>
+                <input id="radio_stars2" type="radio" name="widget_stars_value" value="4">
+                <label for="radio_stars2" class="widget_label widget_mouse_pointer"><span class="visuallyhidden">4 Stars</span>&#9734;</label>
+                <input id="radio_stars3" type="radio" name="widget_stars_value" value="3">
+                <label for="radio_stars3" class="widget_label widget_mouse_pointer"><span class="visuallyhidden">3 Stars</span>&#9734;</label>
+                <input id="radio_stars4" type="radio" name="widget_stars_value" value="2">
+                <label for="radio_stars4" class="widget_label widget_mouse_pointer"><span class="visuallyhidden">2 Stars</span>&#9734;</label>
+                <input id="radio_stars5" type="radio" name="widget_stars_value" value="1">
+                <label for="radio_stars5" class="widget_label widget_mouse_pointer"><span class="visuallyhidden">1 Stars</span>&#9734;</label>
+            </p>
+            <div class="borderbottonminiline"><p align="center"><span class="borderbottonminiline_2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p></div>
+            <div tabindex="-1" id="listofcomments"><h2 id="styletextcomments" class="styletextcomments">Comments with valoration <select id="selectgrvalue" style="width: 50px;height: 40px;font-size: 15px;"><option value="0" selected>All</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></h2></div>
+            <div id="firstComment" class="stylefirstcomment">
+                <ul style="list-style-type: none;" id="widget_first_comments_ul">
+                    <li>
+                        <div>
+                            <img src="/src/img/user4star.png" alt="Smiley face" height="42" width="42">
+                                    <span class="stylefontsize14">
+                                        <b>Lorem ipsum dolor sit amet, </b><br>consectetur adipiscing elit. Aliquam sollicitudin porta semper. Praesent sodales sit amet sapien ut dapibus.
+                                    </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="listComments" class="stylelistcomments">
+                <ul class="styleul" id="widget_comments_ul">
+                    <li>
+                        <img src="/src/img/user4star.png" alt="Smiley face" height="42" width="42">
+                                <span class="stylefontsize14">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sollicitudin porta semper. Praesent sodales sit amet sapien ut dapibus.
+                                </span>
+                    </li>
+                    <li class="stylelicommets">
+                        <img src="/src/img/user4star.png" alt="Smiley face" height="42" width="42">
+                                <span class="stylefontsize14">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sollicitudin porta semper. Praesent sodales sit amet sapien ut dapibus.
+                                </span>
+                    </li>
+                    <li class="stylelicommets">
+                        <img src="/src/img/user4star.png" alt="Smiley face" height="42" width="42">
+                                <span class="stylefontsize14">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sollicitudin porta semper. Praesent sodales sit amet sapien ut dapibus.
+                                </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="stylemarginrigth10">
+                <p align="right">
+                    <a href="#" onclick="loadmorecomments();" class="ahref">
+                        <span id="morecomments" style="color:#00526e">More Comments</span>
+                    </a>
+                </p>
+
+                <div id="provideoyourrate" style="display:none;">
+                    <div><h2 class="styletitleproviderate" style="font-size: 16px;">Provide Your Rate</h2></div>
+                    <div class="styleproviderate">
+                        <h3 style="font-size: 14px;">Your overall rating of this product</h3>
+                    </div>
+                    <!--<div class="rating">
+                        <span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span><span>&#9734;</span>
+                    </div>-->
+
+                    <p class="widget_categorization" align="center">
+                        <input id="radio_stars1_rate" type="radio" name="widget_stars_value_rate" value="5" tabindex="5">
+                        <label for="radio_stars1_rate" class="widget_label_50 widget_mouse_pointer"><span class="visuallyhidden">5 Stars</span><span class="spanstar">&#9734</span></label>
+                        <input id="radio_stars2_rate" type="radio" name="widget_stars_value_rate" value="4" tabindex="4">
+                        <label for="radio_stars2_rate" class="widget_label_50 widget_mouse_pointer"><span class="visuallyhidden">4 Stars</span><span class="spanstar">&#9734</span></label>
+                        <input id="radio_stars3_rate" type="radio" name="widget_stars_value_rate" value="3" tabindex="3">
+                        <label for="radio_stars3_rate" class="widget_label_50 widget_mouse_pointer"><span class="visuallyhidden">3 Stars</span><span class="spanstar">&#9734</span></label>
+                        <input id="radio_stars4_rate" type="radio" name="widget_stars_value_rate" value="2" tabindex="2">
+                        <label for="radio_stars4_rate" class="widget_label_50 widget_mouse_pointer"><span class="visuallyhidden">2 Stars</span><span class="spanstar">&#9734</span></label>
+                        <input id="radio_stars5_rate" type="radio" name="widget_stars_value_rate" value="1" tabindex="1">
+                        <label for="radio_stars5_rate" class="widget_label_50 widget_mouse_pointer"><span class="visuallyhidden">1 Stars</span><span class="spanstar">&#9734</span></label>
+                    </p>
+                    <div class="styletitlemyreview"><label for="widget_title_comment">Title of your review</label></div>
+                    <div class="styledivtitlereview">
+                        <input type="text" name="widget_title_comment" id="widget_title_comment" class="stylewidth100pc"/>
+                    </div>
+                    <div class="styleyourreview"><label for="widget_comment">Your review</label></div>
+                    <div class="styleyourreviewtextarea">
+                        <textarea rows="2" cols="32" name="widget_comment" id="widget_comment"></textarea>
+                    </div>
+                    <p align="center">
+                        <a href="#" style="color: #fff;" class="stylebuttonback ahref" onclick="normalwidget();">Back</a>
+                        <a href="#" style="color: #fff;" class="stylebuttonsend ahref" onclick="callWebServiceWithComment();">Send</a>
+                    </p>
+                </div>
+                <div id="provideoyourrateok" class="styleprovideoyourrateok" tabindex="-1"><p align="center">Thank you</p></div>
+                <div id="buttonthankyou" style="display:none;">
+                    <p align="center">
+                        <a href="#" style="color: #fff;" class="stylebuttonback ahref" onclick="normalwidget();">Ok</a>
+                    </p>
+                </div>
+
+
+                <div id="buttonprovideoyourrate" style="">
+                    <p align="center">
+                        <a href="#" style="color: #fff;" class="stylebuttonback ahref" onclick="loadprovideyourrate();">Write a comment and rate it</a>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
