@@ -85,7 +85,7 @@
     
         
         <!-- PARA INTEGRAR-->
-        <link href="css/widgetfeedback_ul.css" rel="stylesheet">
+        <link href="src/css/widget.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="src/js/widgetStrings.js"></script>
         <script src="src/js/widget.js"></script>
@@ -93,8 +93,8 @@
     </head>
     
     <body id="fluid-id-1bzxr06a-133">
-        <a class="topbar-skip-link" href="http://localhost:7070/widget/ul.html#main" tabindex="0">Skip to Main Content</a>
-        <a class="topbar-skip-link" href="http://localhost:7070/widget/ul.html#widget" tabindex="0">Widget</a>
+        <a class="topbar-skip-link" href="#main" tabindex="0">Skip to Main Content</a>
+        <a class="topbar-skip-link" href="#widget" tabindex="0">Widget</a>
 
         <!-- TODO: Migrate this to a "content aware" part of the API when this feature is complete:  https://github.com/GPII/gpii-express/pull/6 -->
         <div class="row collapse ul-topbar">
@@ -156,7 +156,7 @@
                                         <div id="loading"></div>
                                         <div id="widget_content" class="widget_content">
                                             <div tabindex="0" id="rate">
-                                                <h1><span class="widgetStrings">TITLE</span> (<span id="valuemedia"></span>/5)</h1>
+                                                <h1><span class="widgetStrings">TITLE</span> <span id="valuemedia"></span></h1>
                                                 <p id="valuemedia_stars" class="widget_categorization" aria-hidden="true"></p>
                                             </div>
                                             <div class="separator"></div>

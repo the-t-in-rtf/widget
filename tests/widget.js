@@ -1,14 +1,15 @@
 describe('Widget', function(){
 	
-	jasmine.getFixtures().fixturesPath = './';
-	jasmine.getStyleFixtures().fixturesPath = './css';
+	jasmine.getFixtures().fixturesPath = './../';
+	jasmine.getStyleFixtures().fixturesPath = './../src/css/';
 	var html = readFixtures('ul.html');
 	var widget_regex = /<section id=\"widget\"[^>]*>((.|[\n\r])*)<\/section>/im;
 	var array_matches = widget_regex.exec(html);
 	var widget_html = array_matches[0];
+
 	
 	beforeEach(function() {
-		loadStyleFixtures('widgetfeedback_ul.css');
+		loadStyleFixtures('widget.css');
 		setFixtures(widget_html);
 		jasmine.Ajax.install();
 		spyOn(WidgetUI, 'setWidgetStateWithRate').and.callThrough();
@@ -84,7 +85,7 @@ describe('Widget', function(){
 		it('Rate form should be hidden and ratting button visible', function(){
 			expect($('#provideoyourrate')).toBeHidden();
 			expect($('#buttonprovideoyourrate')).toBeVisible();
-			expect($('#buttonRate')).toContainText('Write a comment and rate it');
+			expect($('#buttonRate')).toContainText(WidgetConf.strings('CREATE'));
 		});
 		
 		it('Button delete comment should be hidden', function(){
@@ -112,7 +113,7 @@ describe('Widget', function(){
 		it('Rate form should be hidden and ratting button should be edit comment', function(){
 			expect($('#provideoyourrate')).toBeHidden();
 			expect($('#buttonprovideoyourrate')).toBeVisible();
-			expect($('#buttonRate')).toContainText('Edit your comment and rate');
+			expect($('#buttonRate')).toContainText(WidgetConf.strings('UPDATE'));
 		});
 		
 		it('Button delete should be visible', function(){
@@ -141,7 +142,7 @@ describe('Widget', function(){
 		it('Rate form should be hidden and ratting button visible', function(){
 			expect($('#provideoyourrate')).toBeHidden();
 			expect($('#buttonprovideoyourrate')).toBeVisible();
-			expect($('#buttonRate')).toContainText('Write a comment and rate it');
+			expect($('#buttonRate')).toContainText(WidgetConf.strings('CREATE'));
 		});
 		
 		it('Button delete should be hidden', function(){
@@ -316,14 +317,14 @@ describe('Widget', function(){
 		});
 		
 		it('Should have a reply button', function(){
-			expect($('#widget_comments_ul > li .reply_button')).toContainText('Reply comment');
+			expect($('#widget_comments_ul > li .reply_button')).toContainText(WidgetConf.strings('REPLY'));
 		});
 		
 		it('Should show reply form on click', function(){
 			$('#widget_comments_ul > li:first-child .reply_button').click();
 			expect(ButtonReply).toHaveBeenTriggered();
-			expect($('#widget_comments_ul > li:first-child form .cancel')).toContainText('Cancel');
-			expect($('#widget_comments_ul > li:first-child form .send')).toContainText('Send');
+			expect($('#widget_comments_ul > li:first-child form .cancel')).toContainText(WidgetConf.strings('CANCEL'));
+			expect($('#widget_comments_ul > li:first-child form .send')).toContainText(WidgetConf.strings('SEND'));
 		});
 	});
 	
