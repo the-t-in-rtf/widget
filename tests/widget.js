@@ -1,6 +1,6 @@
 describe('Widget', function(){
 	
-	jasmine.getFixtures().fixturesPath = './../';
+	jasmine.getFixtures().fixturesPath = './';
 	jasmine.getStyleFixtures().fixturesPath = './../src/css/';
 	var html = readFixtures('ul.html');
 	var widget_regex = /<section id=\"widget\"[^>]*>((.|[\n\r])*)<\/section>/im;
