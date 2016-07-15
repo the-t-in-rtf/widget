@@ -3,8 +3,8 @@
      * Conf, API, UI, Init
      */
     var WidgetConf = {
-        // url:  'http://localhost:8084/widget/',
-        url:  'http://193.27.9.220/widget/',
+        url:  'http://localhost:8084/widget/',
+        //url:  'http://193.27.9.220/widget/',
         app:  'ul',
         user: '4',
         id:   $(location).attr('pathname'),
@@ -180,8 +180,9 @@
             WidgetAPI.getAverageAndComments(WidgetUI.setWidgetStateCallback);
         },
         setWidgetStateCallback: function(data){
-            var rating_text = '(' + data.value + '/5 - ' + data.comments.length + ')';
-            $("#valuemedia").text(rating_text);
+            var ncomments = data.comments.length > 1 ? WidgetConf.strings('COMMENTS') : WidgetConf.strings('COMMENT');
+            var rating_text = '' + data.value + '/5 <a href="#widget_stars_comments_part">' + data.comments.length + ' ' + ncomments + '</a>';
+            $("#valuemedia").html(rating_text);
             var stars_rate = '';
             for(var i = 1; i <= 5; i++){
                 stars_rate += (i <= data.value) ? '&#9733;' : '&#9734;';
@@ -368,8 +369,8 @@
                     li_reply.append(reply_date);
                     li_reply.append(reply_text);
                     if(WidgetConf.isVendor && this.user == WidgetConf.user){
-                        var reply_edit   = $('<a>').attr({href:'#'}).text(WidgetConf.strings('EDIT REPLY')).addClass('edit_reply').data({IdReply: this.id, IdComment: comment.id});
-                        var reply_delete = $('<a>').attr({href:'#'}).text(WidgetConf.strings('DELETE REPLY')).addClass('delete_reply').data({IdReply: this.id, IdComment: comment.id});
+                        var reply_edit   = $('<a>').attr({href:'#'}).text(WidgetConf.strings('EDIT REPLY')).addClass('edit_reply blue_button').data({IdReply: this.id, IdComment: comment.id});
+                        var reply_delete = $('<a>').attr({href:'#'}).text(WidgetConf.strings('DELETE REPLY')).addClass('delete_reply red_button').data({IdReply: this.id, IdComment: comment.id});
                         li_reply.append(reply_edit);
                         li_reply.append(reply_delete);
                         //Remove Reply comment link

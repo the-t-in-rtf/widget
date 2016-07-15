@@ -87,7 +87,7 @@
 }
 
 .widget_stars #histogram table th{
-	width:25%;
+	width:10%;
 }
 
 .widget_stars #histogram table td span{
@@ -242,12 +242,14 @@
 	padding: 6px 12px;
 }
 
-.widget_stars #buttonRate:before{
+.widget_stars #buttonRate:before,
+.widget_stars .edit_reply:before{
 	content:"\270e";
 	padding-right:10px;
 }
 
-.widget_stars #buttonDelete:before{
+.widget_stars #buttonDelete:before,
+.widget_stars .delete_reply:before{
 	content:"\274c ";
 	padding-right:10px;
 }
