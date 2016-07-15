@@ -40,7 +40,7 @@ Here are all styles of widget (colors , shapes, sizes , etc ).
 
 Here are the strings of widget. This file es for translation support.
 
-## `src/js/widget.js`
+## `src/js/widgetConf.js`
 
 This part is configuration of widget.
 Very important: The first few lines of the file are those that have to redefine :
