@@ -26,6 +26,8 @@ widget, as in:
 ```
 <link href="src/css/widget.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="src/js/widgetStrings.js"></script>+
+<script src="../src/js/widgetConf.js"></script>
 <script src="src/js/widget.js"></script>
 ```
 See below for details on each file
@@ -34,17 +36,32 @@ See below for details on each file
 
 Here are all styles of widget (colors , shapes, sizes , etc ).
 
+## `src/js/widgetStrings.js`
+
+Here are the strings of widget. This file es for translation support.
+
+## `src/js/widget.js`
+
+This part is configuration of widget.
+Very important: The first few lines of the file are those that have to redefine :
+
+```
+var WidgetConf = {
+    url:  'INSERT SERVER URL',
+    app:  'ul',
+    user: 'INSERT USER ID',
+    id:   'ISER PRODUCT ID',
+    isVendor: [true|false],
+    strings : widgetStrings.value,
+    currentLocale : widgetStrings.locale
+};
+```
+
 
 ## `src/js/widget.js`
 
 This part is all the logic for creaccion the widget and behavior.
-Very important: The first few lines of the file are those that have to redefine :
 
-```
-var user = "insert user id " ;
-var page = "inset page id " ;
-var urlserverGlobal = "insert urlserver";
-```
 
 # Running test
 
