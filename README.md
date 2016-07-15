@@ -50,6 +50,6 @@ var urlserverGlobal = "insert urlserver";
 
 In order to run tests you may open the SpecRunner.html file provided in tests folder. That will run Jasmine tests provided with User Feedback Widget.
 
-## tests/SpecRunner.html
+[http://localhost:6941/tests/SpecRunner.html](http://localhost:6941/tests/SpecRunner.html)
 
 You must run the file under a web server instead of locally to avoid cross domain issues. 
