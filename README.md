@@ -38,7 +38,7 @@ Here are all styles of widget (colors , shapes, sizes , etc ).
 
 ## `src/js/widgetStrings.js`
 
-Here are the strings of widget. This file es for translation support.
+Here are the strings of widget. This file is for translation support.
 
 ## `src/js/widgetConf.js`
 
