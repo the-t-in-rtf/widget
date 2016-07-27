@@ -22,7 +22,8 @@ var widgetStrings = (function () {
       "LABEL REVIEW BODY" : "Write your review here",
       "MESSAGE REVIEW OK" : "Thank you!",
       "EDIT REPLY"        : "Edit reply",
-      "DELETE REPLY"      : "Delete reply"
+      "DELETE REPLY"      : "Delete reply",
+      "EMPTY FIELDS" : "Please write a title and comment"
   };
   // var _locale = "en-UK";
   var _locale = "pt-PT";

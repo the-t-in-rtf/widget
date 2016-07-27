@@ -19,6 +19,7 @@ var WidgetAPI = {
                 callback(data);
             },
             error: function(xhr, msg){
+                $('.widget_stars').text('Rating server conection error');
                 console.log(msg + ', ' + xhr.status + ': ' + xhr.statusText);
             }
         });
@@ -129,6 +130,11 @@ var WidgetUI = {
         
         /* New interface  ¿Integration? */
         $('#widget_stars_rate_part #rate, #widget_stars_comments_part #histogram').off('mouseover mouseout focus blur').find('a').off('focus blur');
+        $('#widget_stars_comments_part #histogram a').on('focus', function(){
+            $(this).parents('tr').addClass('hover');
+        }).on('blur', function(){
+            $(this).parents('tr').removeClass('hover');
+        });
         
         //Event delegation
         $('#listComments').on('click', 'a.like_button', function(){
@@ -210,11 +216,18 @@ var WidgetUI = {
         WidgetUI.setHistogram(data.comments);
     },
     addRateAndComment: function(){
+        $('#errors p').remove();
         var rate = $('input[name=widget_stars_rate]:checked').val();
         if(typeof rate !== 'undefined'){
             var title = $('#widget_title_comment').val();
             var comment = $('#widget_comment').val();
-            WidgetAPI.setRateAndComment(rate, title, comment, WidgetUI.addRateAndCommentCallback);
+            if(title != '' && comment != ''){
+                WidgetAPI.setRateAndComment(rate, title, comment, WidgetUI.addRateAndCommentCallback);
+            }
+            else{
+                //alert('Please write a title and comment');
+                $('#errors').append($('<p>').text(WidgetConf.strings("EMPTY FIELDS")));
+            }
         }
         else{
             /*@todo:set errors on widget itself, don't use an alert */
@@ -265,6 +278,7 @@ var WidgetUI = {
         WidgetUI.setWidgetStateWithRate('0');
     },
     resetWidget: function(){
+        $('#errors p').remove();
         $('#buttonprovideoyourrate').show();
         $('#listComments').show();
         $('#provideoyourrate').hide();
@@ -328,7 +342,7 @@ var WidgetUI = {
         $("#morecomments").hide();
     },
     addComment: function(comment){
-        var img = '<img src="img/user.png" alt="" height="28" width="28">';
+        var img = '<img src="src/img/user' + comment.value + 'star.png" alt="" height="28" width="28">';
         var title = '<strong><span>' + comment.title + '</span> (' + comment.value + '/5)</strong>';
         var date = '<span class="date">&#128197 ' + new Date(comment.date).toLocaleDateString(WidgetConf.currentLocale()) + '</span>';
         var body = '<div>' + comment.c + '</div>';

@@ -156,13 +156,11 @@
                                     <div class="widget_stars" id="widget_stars_rate_part">
                                         <div id="loading"></div>
                                         <div id="widget_content" class="widget_content">
-                                            <div tabindex="0" id="rate">
-                                                <h1><span class="widgetStrings">TITLE</span> <span id="valuemedia"></span></h1>
+                                            <div id="rate">
+                                                <h1 tabindex="0"><span class="widgetStrings">TITLE</span> <span id="valuemedia"></span></h1>
                                                 <p id="valuemedia_stars" class="widget_categorization" aria-hidden="true"></p>
                                             </div>
                                             <div class="separator"></div>
-
-                                            
                                         </div>
                                     </div>
                                     <!-- START WIDGET -->
@@ -354,7 +352,7 @@
                                         
                                         <label for="widget_comment"><span class="widgetStrings">LABEL REVIEW BODY</span></label>
                                         <textarea rows="2" cols="32" name="widget_comment" id="widget_comment"></textarea>
-                                        
+                                        <div aria-live="polite" class="errors" id="errors"></div>
                                         <p class="aligncenter">
                                             <button href="#" class="blue_button" id="buttonBack"><span class="widgetStrings">BACK</span></button>
                                             <button class="green_button" id="buttonSend"><span class="widgetStrings">SEND</span></button>
