@@ -19,6 +19,13 @@ fluid.defaults("gpii.test.userReviewWidget.harness", {
         api:   7654,
         pouch: 7631
     },
+    databases: {
+        "users": { "data": "%gpii-user-review-widget/tests/data/users.json" }
+    },
+    distributeOptions: {
+        source: "{that}.options.databases.users",
+        target: "{that gpii.pouch}.options.databases.users"
+    },
     components: {
         express: {
             options: {
